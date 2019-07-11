@@ -52,7 +52,6 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'meiduomall.urls'
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.jinja2.Jinja2',  # jinja2模板引擎
@@ -196,3 +195,5 @@ LOGGING = {
         },
     }
 }
+
+AUTH_USER_MODEL = 'users.User'
