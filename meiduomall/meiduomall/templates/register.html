@@ -12,7 +12,7 @@
     <script type="text/javascript" src="{{ static('js/host.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/vue-2.5.16.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/axios-0.18.0.min.js') }}"></script>
-
+    <script src="{{ static('js/common.js') }}"></script>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -28,7 +28,7 @@
         <div class="r_con fr">
             <div class="reg_title clearfix">
                 <h1>用户注册</h1>
-                <a href="../static/login.html">登录</a>
+                <a href="{{ static('login.html') }}">登录</a>
             </div>
             <div class="reg_form clearfix">
                 <form method="post" class="register_form" @submit="on_submit">
@@ -36,7 +36,7 @@
                     <ul>
                         <li>
                             <label>用户名:</label>
-                            <input v-model="username" @blur="check_username" type="text" name="user_name"
+                            <input v-model="username" @blur="check_username" type="text" name="username"
                                    id="user_name">
                             <span v-show="error_name" class="error_tip">[[error_name_message]]</span>
                         </li>
@@ -57,9 +57,10 @@
                         </li>
                         <li>
                             <label>图形验证码:</label>
-                            <input type="text" name="pic_code" id="pic_code" class="msg_input">
-                            <img src="{{ static('images/pic_code.jpg') }}" alt="图形验证码" class="pic_code">
-                            <span class="error_tip">请填写图形验证码</span>
+                            <input type="text" v-model="image_code" @blur="check_image_code" name="image_code"
+                                   id="pic_code" class="msg_input">
+                            <img :src="image_code_url" @click="generate_image_code" alt="图形验证码" class="pic_code">
+                            <span v-show="error_image_code" class="error_tip">[[ error_image_code_message ]]</span>
                         </li>
                         <li>
                             <label>短信验证码:</label>
