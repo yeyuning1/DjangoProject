@@ -6,6 +6,8 @@ from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
+from django_redis import get_redis_connection
+
 from .models import User
 
 
@@ -28,8 +30,8 @@ class RegisterView(View):
         password2 = request.POST.get('password2')
         mobile = request.POST.get('mobile')
         allow = request.POST.get('allow')
-        # TODO:sms_code检验
-        if not all([username, password, password2, mobile, allow]):
+        sms_code = request.POST.get('sms_code')
+        if not all([username, password, password2, mobile, allow, sms_code]):
             return HttpResponseForbidden('缺少必要参数')
         if not re.match(r'^[a-zA-Z0-9_-]{5,20}$', username):
             return HttpResponseForbidden('用户名不规范')
@@ -41,6 +43,18 @@ class RegisterView(View):
             return HttpResponseForbidden('手机号码不规范')
         if allow != 'on':
             return HttpResponseForbidden('未勾选用户协议')
+        # 检查短信验证码是否正确
+        redis_conn = get_redis_connection('verify_code')
+        sms_code_server = redis_conn.get('sms_code_%s' % mobile)
+        if sms_code_server is None:
+            return render(request,
+                          'register.html',
+                          {'sms_code_errmsg': '无效的短信验证码'})
+        if sms_code_server.decode('utf-8') != sms_code:
+            return render(request,
+                          'register.html',
+                          {'sms_code_errmsg': '输入短信验证码有误'})
+
         try:
             user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
