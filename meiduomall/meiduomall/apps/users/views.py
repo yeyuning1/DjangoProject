@@ -119,9 +119,20 @@ class LoginView(View):
         else:
             # 用户选择记住密码，设置session的周期为None，即2周
             request.session.set_expiry(None)
-        # 响应登陆结果
-        response = redirect(reverse('contents:index'))
+        # 获取跳转过来的地址:
+        next = request.GET.get('next')
+        # 判断参数是否存在:
+        if next:
+            # 如果是从别的页面跳转过来的, 则重新跳转到原来的页面
+            response = redirect(next)
+        else:
+            # 如果是直接登陆成功，就重定向到首页
+            response = redirect(reverse('contents:index'))
+
+        # 设置 cookie 信息
         response.set_cookie('username', user.username, max_age=3600 * 24 * 15)
+
+        # 返回响应
         return response
 
 
