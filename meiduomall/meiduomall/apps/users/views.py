@@ -1,6 +1,6 @@
 import re
 
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 from django.db import DatabaseError
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
@@ -12,7 +12,7 @@ from .models import User
 
 
 # Create your views here.
-
+# -------------------------------------------------
 
 class RegisterView(View):
 
@@ -84,3 +84,47 @@ class MobileCountView(View):
         count = User.objects.filter(mobile=mobile).count()
         print(count)
         return JsonResponse({'code': 0, 'errmsg': 'OK', 'count': count})
+
+
+# -------------------------------------------------
+# 以下为登陆
+class LoginView(View):
+    '''用户登陆'''
+
+    def get(self, request):
+        return render(request, 'login.html')
+
+    def post(self, request):
+        '''
+        验证用户登陆信息
+        :param request:
+        :return:
+        '''
+        # 接收参数
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        remembered = request.POST.get('remembered')
+        # 检查参数
+        if not all([username, password, remembered]):
+            return HttpResponseForbidden('缺少必传参数')
+
+        if not re.match(r'^[a-zA-Z0-9_-]{5,20}$', username):
+            return HttpResponseForbidden('请输入正确的用户名或手机号')
+
+        if not re.match(r'^[0-9A-Za-z]{8,20}$', password):
+            return HttpResponseForbidden('密码最少8位，最长20位')
+
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return render(request, 'login.html', {'account_errmsg': '用户名或密码错误'})
+        # 实现状态保持
+        login(request, user)
+        # 设置状态保持的周期
+        if remembered != 'on':
+            # 用户无需记住密码， 设置session的周期为0
+            request.session.set_expiry(0)
+        else:
+            # 用户选择记住密码，设置session的周期为None，即2周
+            request.session.set_expiry(None)
+        # 响应登陆结果
+        return redirect(reverse('contents:index'))
