@@ -203,5 +203,11 @@ LOGGING = {
         },
     }
 }
-
+# 指定自定义的用户数据表
 AUTH_USER_MODEL = 'users.User'
+# 指定自定义的用户认证后端:
+AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
+
+# 登录用户才能访问, 否则访问如下路径：
+# 搭配 login_required 装饰器使用的
+LOGIN_URL = '/login/'

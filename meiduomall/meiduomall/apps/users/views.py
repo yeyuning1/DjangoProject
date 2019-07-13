@@ -1,17 +1,15 @@
 import re
-
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.db import DatabaseError
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
-
+from users.utils import LoginRequiredMixin
 from .models import User
 
 
-# Create your views here.
 # -------------------------------------------------
 
 class RegisterView(View):
@@ -20,11 +18,8 @@ class RegisterView(View):
         return render(request, 'register.html')
 
     def post(self, request):
-        '''
-        处理注册页面发送的表单请求
-        :param request:
-        :return:
-        '''
+        """处理注册页面发送的表单请求"""
+
         username = request.POST.get('username')
         password = request.POST.get('password')
         password2 = request.POST.get('password2')
@@ -60,7 +55,9 @@ class RegisterView(View):
         except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败，请重新注册'})
         login(request, user)
-        return redirect(reverse('contents:index'))
+        response = redirect(reverse('contents:index'))
+        response.set_cookie('username', user.username, max_age=3600 * 24 * 15)
+        return response
 
 
 class UsernameCountView(View):
@@ -89,23 +86,19 @@ class MobileCountView(View):
 # -------------------------------------------------
 # 以下为登陆
 class LoginView(View):
-    '''用户登陆'''
+    """用户登陆"""
 
     def get(self, request):
         return render(request, 'login.html')
 
     def post(self, request):
-        '''
-        验证用户登陆信息
-        :param request:
-        :return:
-        '''
+        """验证用户登陆信息"""
         # 接收参数
         username = request.POST.get('username')
         password = request.POST.get('password')
         remembered = request.POST.get('remembered')
         # 检查参数
-        if not all([username, password, remembered]):
+        if not all([username, password]):
             return HttpResponseForbidden('缺少必传参数')
 
         if not re.match(r'^[a-zA-Z0-9_-]{5,20}$', username):
@@ -127,4 +120,44 @@ class LoginView(View):
             # 用户选择记住密码，设置session的周期为None，即2周
             request.session.set_expiry(None)
         # 响应登陆结果
-        return redirect(reverse('contents:index'))
+        response = redirect(reverse('contents:index'))
+        response.set_cookie('username', user.username, max_age=3600 * 24 * 15)
+        return response
+
+
+# -------------------------------------------------
+# 以下为登出
+
+class LogoutView(View):
+    '''退出登陆'''
+
+    def get(self, request):
+        '''
+        实现登出功能，即清除session
+        :param request:
+        :return:
+        '''
+        # 清理 session
+        logout(request)
+        # 重定向到首页
+        response = redirect(reverse('contents:index'))
+        # 退出登陆时要清除cookie中的uernames
+        response.delete_cookie('username')
+        # 返回响应体
+        return response
+
+
+# -------------------------------------------------
+# 以下为用户个人中心
+
+class UserInfoView(LoginRequiredMixin, View):
+    """用户中心"""
+
+    def get(self, request):
+        """提供个人信息界面"""
+        # 使用 is_authenticate 判断用户是否登录
+        # if request.user.is_authenticated():
+        #     return render(request, 'user_center_info.html')
+        # else:
+        #      return render(request, 'user_center_info.html')
+        return render(request, 'user_center_info.html')

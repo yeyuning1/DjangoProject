@@ -9,23 +9,29 @@ var vm = new Vue({
         f3_tab: 1, // 3F 标签页控制
         cart_total_count: 0, // 购物车总数量
         carts: [], // 购物车数据,
+        // 添加一个变量, 从 cookie 中获取用户信息后
+        // 赋值给该变量
+        username: '',
     },
-    mounted(){
+    mounted() {
+        // 添加一个变量, 从 cookie 中获取用户信息后
+        // 赋值给该变量
+        this.username = getCookie('username');
         // 获取购物车数据
         this.get_carts();
     },
     methods: {
         // 获取购物车数据
-        get_carts(){
-            var url = this.host+'/carts/simple/';
+        get_carts() {
+            var url = this.host + '/carts/simple/';
             axios.get(url, {
-                    responseType: 'json',
-                })
+                responseType: 'json',
+            })
                 .then(response => {
                     this.carts = response.data.cart_skus;
                     this.cart_total_count = 0;
-                    for(var i=0;i<this.carts.length;i++){
-                        if (this.carts[i].name.length>25){
+                    for (var i = 0; i < this.carts.length; i++) {
+                        if (this.carts[i].name.length > 25) {
                             this.carts[i].name = this.carts[i].name.substring(0, 25) + '...';
                         }
                         this.cart_total_count += this.carts[i].count;
@@ -37,14 +43,6 @@ var vm = new Vue({
         }
     }
 });
-
-
-
-
-
-
-
-
 
 
 // $(function(){
