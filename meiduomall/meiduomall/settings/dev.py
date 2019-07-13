@@ -212,3 +212,8 @@ AUTHENTICATION_BACKENDS = ['users.utils.UsernameMobileAuthBackend']
 # 登录用户才能访问, 否则访问如下路径：
 # 搭配 login_required 装饰器使用的
 LOGIN_URL = '/login/'
+
+# QQ登录功能信息
+QQ_CLIENT_ID = '101518219'
+QQ_CLIENT_SECRET = '418d84ebdc7241efb79536886ae95224'
+QQ_REDIRECT_URI = 'http://www.meiduo.site:8000/oauth_callback'
