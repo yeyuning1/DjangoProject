@@ -10,7 +10,7 @@ from utils.response_code import RETCODE
 from verifications import crons
 import logging
 
-logger = logging.Logger('django')
+logger = logging.getLogger('django')
 
 
 class ImageCodeView(View):
@@ -81,10 +81,16 @@ class SendSmsCodeView(View):
         # CCP().send_template_sms(mobile,
         #                         [sms_code, crons.SMS_CODE_EXPIRE_M], crons.SMS_CODE_EXPIRE_TEMPLATES)
 
+        # 使用pipeline操作Redis数据库
+        # 1. 创建Redis管道
+        # 2. 将Redis请求添加到队列
+        # 3. 执行请求
         # 保存手机验证码
-        redis_conn.setex('sms_code_%s' % mobile, crons.SMS_CODE_EXPIRE_S, sms_code)
+        pl = redis_conn.pipeline()
+        pl.setex('sms_code_%s' % mobile, crons.SMS_CODE_EXPIRE_S, sms_code)
         # 重新写入send_flag
         # 60s内是否重复发送的标记
         # SEND_SMS_CODE_INTERVAL = 60
-        redis_conn.setex('send_flag_%s' % mobile, crons.SEND_SMS_CODE_INTERVAL, 1)
+        pl.setex('send_flag_%s' % mobile, crons.SEND_SMS_CODE_INTERVAL, 1)
+        pl.execute()
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '发送短信成功'})
