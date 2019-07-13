@@ -4,10 +4,10 @@ from django.shortcuts import render
 # Create your views here.
 from django.views import View
 from django_redis import get_redis_connection
-from libs.captcha.captcha import captcha
-from libs.yuntongxun.ccp_sms import CCP
-from utils.response_code import RETCODE
-from verifications import magic_num
+from meiduomall.libs.captcha.captcha import captcha
+from meiduomall.libs.yuntongxun.ccp_sms import CCP
+from meiduomall.utils.response_code import RETCODE
+from verifications import constants
 import logging
 
 logger = logging.getLogger('django')
@@ -26,7 +26,7 @@ class ImageCodeView(View):
         '''
         text, image = captcha.generate_captcha()
         redis_conn = get_redis_connection('verify_code')
-        redis_conn.setex('image_code_%s' % uuid, magic_num.IMAGE_CODE_EXPIRE, text)
+        redis_conn.setex('image_code_%s' % uuid, constants.IMAGE_CODE_EXPIRE, text)
         return HttpResponse(image, content_type='image/jpg')
 
 
@@ -79,7 +79,7 @@ class SendSmsCodeView(View):
 
         # 使用容联云平台给用户发送短信
         # CCP().send_template_sms(mobile,
-        #                         [sms_code, magic_num.SMS_CODE_EXPIRE_M], magic_num.SMS_CODE_EXPIRE_TEMPLATES)
+        #                         [sms_code, constants.SMS_CODE_EXPIRE_M], constants.SMS_CODE_EXPIRE_TEMPLATES)
 
         # 使用pipeline操作Redis数据库
         # 1. 创建Redis管道
@@ -87,10 +87,10 @@ class SendSmsCodeView(View):
         # 3. 执行请求
         # 保存手机验证码
         pl = redis_conn.pipeline()
-        pl.setex('sms_code_%s' % mobile, magic_num.SMS_CODE_EXPIRE_S, sms_code)
+        pl.setex('sms_code_%s' % mobile, constants.SMS_CODE_EXPIRE_S, sms_code)
         # 重新写入send_flag
         # 60s内是否重复发送的标记
         # SEND_SMS_CODE_INTERVAL = 60
-        pl.setex('send_flag_%s' % mobile, magic_num.SEND_SMS_CODE_INTERVAL, 1)
+        pl.setex('send_flag_%s' % mobile, constants.SEND_SMS_CODE_INTERVAL, 1)
         pl.execute()
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '发送短信成功'})
