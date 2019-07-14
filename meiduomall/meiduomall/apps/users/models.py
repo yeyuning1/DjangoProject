@@ -10,6 +10,10 @@ class User(AbstractUser):
     # 在用户模型类中增加 mobile 字段
     mobile = models.CharField(max_length=11, unique=True, verbose_name='手机号')
 
+    # 新增 email_active 字段
+    # 用于记录邮箱是否激活, 默认为 False: 未激活
+    email_active = models.BooleanField(default=False, verbose_name='邮箱验证状态')
+
     # 对当前表进行相关设置:
     class Meta:
         db_table = 'tb_users'

@@ -55,7 +55,6 @@ class RegisterView(View):
         except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败，请重新注册'})
 
-
         login(request, user)
         response = redirect(reverse('contents:index'))
         response.set_cookie('username', user.username, max_age=3600 * 24 * 15)
@@ -174,4 +173,11 @@ class UserInfoView(LoginRequiredMixin, View):
         #     return render(request, 'user_center_info.html')
         # else:
         #      return render(request, 'user_center_info.html')
-        return render(request, 'user_center_info.html')
+        # 现已使用LoginRequiredMixin扩展类完成验证登陆功能
+        context = {
+            'username': request.user.username,
+            'mobile': request.user.mobile,
+            'email': request.user.email,
+            'email_active': request.user.email_active
+        }
+        return render(request, 'user_center_info.html', context)
