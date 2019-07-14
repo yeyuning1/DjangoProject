@@ -31,4 +31,4 @@ def send_verify_email(self, to_email, verify_url):
     except Exception as e:
         logger.error(e)
         # 有异常自动尝试三次
-        # raise self.retry(exc=e, max_retries=3)
+        raise self.retry(exc=e, max_retries=3)

@@ -1,7 +1,6 @@
 import os
 
-if not os.getenv('DJANGO_SETTINGS_MODULE'):
-    os.environ['DJANGO_SETTINGS_MODULE'] = 'meiduo_mall.settings.dev'
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'meiduomall.settings.dev')
 # 导入 Celery 类
 
 from celery import Celery
