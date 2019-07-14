@@ -54,6 +54,8 @@ class RegisterView(View):
             user = User.objects.create_user(username=username, password=password, mobile=mobile)
         except DatabaseError:
             return render(request, 'register.html', {'register_errmsg': '注册失败，请重新注册'})
+
+
         login(request, user)
         response = redirect(reverse('contents:index'))
         response.set_cookie('username', user.username, max_age=3600 * 24 * 15)
@@ -126,6 +128,7 @@ class LoginView(View):
             # 如果是从别的页面跳转过来的, 则重新跳转到原来的页面
             response = redirect(next)
         else:
+
             # 如果是直接登陆成功，就重定向到首页
             response = redirect(reverse('contents:index'))
 

@@ -1,6 +1,5 @@
 import logging
 import re
-
 from QQLoginTool.QQtool import OAuthQQ
 from django.contrib.auth import login
 from django.db import DatabaseError
@@ -9,8 +8,6 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
-
-from meiduomall import settings
 from meiduomall.settings import dev
 from meiduomall.utils.response_code import RETCODE
 from oauth.models import OAuthQQUser

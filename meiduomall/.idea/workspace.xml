@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2a3ecc24-4c79-480f-b524-905ccf3ef675" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/meiduomall.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/meiduomall.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/meiduomall/settings/dev.py" beforeDir="false" afterPath="$PROJECT_DIR$/meiduomall/settings/dev.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/meiduomall/apps/oauth/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/meiduomall/apps/oauth/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -41,11 +39,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/meiduomall/apps/users/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
+            <state relative-caret-position="23">
               <caret line="10" selection-start-line="10" selection-end-line="10" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -90,10 +85,10 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1094" />
-    <option name="height" value="1407" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1095" />
+    <option name="height" value="1408" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -101,8 +96,18 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Scope 'Project Files'; set:Project Files; class com.intellij.psi.search.scope.ProjectFilesScope">
+          <expand>
+            <path>
+              <item name="meiduomall" type="3d21c010:ScopeViewTreeModel$ProjectNode" />
+              <item name="D:\Python\projects\meiduo_project\meiduomall" type="442cc68d:ScopeViewTreeModel$RootNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
       <pane id="ProjectPane" />
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -176,11 +181,12 @@
       <workItem from="1562843233033" duration="578000" />
       <workItem from="1562844510095" duration="232000" />
       <workItem from="1562844743299" duration="18000" />
+      <workItem from="1563093414167" duration="18000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="7597000" />
+    <option name="totallyTimeSpent" value="7615000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -192,9 +198,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2176" height="1416" extended-state="6" />
+    <frame x="-7" y="-7" width="1742" height="1126" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16398866" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.16567697" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -249,13 +255,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$USER_HOME$/Desktop/返回数组中第二大的数.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="19" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$USER_HOME$/Desktop/返回数组中第二大的数.py" />
     <entry file="file://$USER_HOME$/Envs/django1.11_py3/Lib/site-packages/django/template/utils.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1265">
@@ -299,11 +299,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/meiduomall/apps/users/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
+        <state relative-caret-position="23">
           <caret line="10" selection-start-line="10" selection-end-line="10" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
