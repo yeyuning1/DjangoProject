@@ -1,4 +1,4 @@
-from itsdangerous import TimedJSONWebSignatureSerializer
+from itsdangerous import TimedJSONWebSignatureSerializer, BadData
 
 from meiduomall.settings import dev
 from oauth import constants
@@ -19,3 +19,27 @@ def generate_access_token(openid):
     data = {'openid': openid}
     token = serializer.dumps(data)
     return token.decode()
+
+
+def check_access_token(access_token):
+    """
+    检验access_token
+    :param access_token: 用户请求携带的access_token
+    :return: openid or None
+    """
+    serializer = TimedJSONWebSignatureSerializer(dev.SECRET_KEY,
+                                                 expires_in=constants.SAVE_QQ_USER_TOKEN_EXPIRES)
+
+    try:
+        # 尝试使用对象的 loads 函数
+        # 对 access_token 进行反序列化( 类似于解密 )
+        # 查看是否能够获取到数据:
+        data = serializer.loads(access_token)
+
+    except BadData:
+        # 如果出错, 则说明 access_token 里面不是我们认可的.
+        # 返回 None
+        return None
+    else:
+        # 如果能够从中获取 data, 则把 data 中的 openid 返回
+        return data.get('openid')
