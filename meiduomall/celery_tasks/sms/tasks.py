@@ -2,8 +2,8 @@
 # name：异步任务别名
 # retry_backoff：异常自动重试的时间间隔 第n次(retry_backoff×2^(n-1))s
 # max_retries：异常自动重试次数的上限
-from libs.yuntongxun.ccp_sms import CCP
-from meiduomall.celery_tasks.main import celery_app
+from celery_tasks.yuntongxun.ccp_sms import CCP
+from celery_tasks.main import celery_app
 import logging
 
 logger = logging.getLogger('django')
@@ -37,8 +37,6 @@ def ccp_send_sms_code(self, mobile, sms_code):
         raise self.retry(exc=Exception('发送短信失败'), max_retries=3)
 
     return result
-
-
 # ccp_send_sms_code.delay(mobile, sms_code)
 
 

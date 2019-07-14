@@ -1,6 +1,9 @@
-# 导入 Celery 类
-from celery import Celery
+import os
 
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'meiduomall.settings.dev')
+# 导入 Celery 类
+
+from celery import Celery
 
 # 创建 celery 对象
 celery_app = Celery('meiduo')

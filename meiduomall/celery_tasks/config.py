@@ -1,6 +1,6 @@
 # 指定消息队列的位置, 使用方式:
 # rabbitmq 用法配置:
-broker_url= 'amqp://admin:admin@127.0.0.1:5672'
+# broker_url= 'amqp://admin:admin@127.0.0.1:5672'
 # 例如:
 # meihao: 在rabbitq中创建的用户名, 注意: 远端链接时不能使用guest账户.
 # 123456: 在rabbitq中用户名对应的密码

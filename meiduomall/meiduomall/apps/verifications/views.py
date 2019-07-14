@@ -4,6 +4,8 @@ from django.shortcuts import render
 # Create your views here.
 from django.views import View
 from django_redis import get_redis_connection
+
+from celery_tasks.sms.tasks import ccp_send_sms_code
 from meiduomall.libs.captcha.captcha import captcha
 from meiduomall.libs.yuntongxun.ccp_sms import CCP
 from meiduomall.utils.response_code import RETCODE
@@ -52,7 +54,7 @@ class SendSmsCodeView(View):
         # 检查send_flag
         send_flag = redis_conn.get('send_flag_%s' % mobile)
         if send_flag:
-            return JsonResponse({{'code': RETCODE.NECESSARYPARAMERR,
+            return JsonResponse({{'code': RETCODE.THROTTLINGERR,
                                   'errmsg': '发送短信过于频繁'}})
 
         # 3.从redis中取得图形验证码
@@ -80,7 +82,8 @@ class SendSmsCodeView(View):
         # 使用容联云平台给用户发送短信
         # CCP().send_template_sms(mobile,
         #                         [sms_code, constants.SMS_CODE_EXPIRE_M], constants.SMS_CODE_EXPIRE_TEMPLATES)
-
+        # 使用Celery进行异步短信发送
+        # ccp_send_sms_code.delay(mobile, sms_code)
         # 使用pipeline操作Redis数据库
         # 1. 创建Redis管道
         # 2. 将Redis请求添加到队列
