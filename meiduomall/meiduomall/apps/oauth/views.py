@@ -8,6 +8,7 @@ from django.urls import reverse
 from django.views import View
 
 from meiduomall import settings
+from meiduomall.settings import dev
 from meiduomall.utils.response_code import RETCODE
 from oauth.models import OAuthQQUser
 from oauth.utils import generate_access_token
@@ -27,9 +28,9 @@ class QQURLView(View):
     def get(self, request):
         # 获取 QQ 登录页面网址
         # 创建 OAuthQQ 类的对象
-        oauth = OAuthQQ(client_id=settings.QQ_CLIENT_ID,
-                        client_secret=settings.QQ_CLIENT_SECRET,
-                        redirect_uri=settings.QQ_REDIRECT_URI,
+        oauth = OAuthQQ(client_id=dev.QQ_CLIENT_ID,
+                        client_secret=dev.QQ_CLIENT_SECRET,
+                        redirect_uri=dev.QQ_REDIRECT_URI,
                         state=next)
         # 调用对象的获取qq地址方法
         login_url = oauth.get_qq_url()
@@ -50,9 +51,9 @@ class QQUserView(View):
             return HttpResponseForbidden('缺少code')
 
         # 创建工具对象
-        oauth = OAuthQQ(client_id=settings.QQ_CLIENT_ID,
-                        client_secret=settings.QQ_CLIENT_SECRET,
-                        redirect_uri=settings.QQ_REDIRECT_URI,
+        oauth = OAuthQQ(client_id=dev.QQ_CLIENT_ID,
+                        client_secret=dev.QQ_CLIENT_SECRET,
+                        redirect_uri=dev.QQ_REDIRECT_URI,
                         state=next)
 
         try:
@@ -95,4 +96,5 @@ class QQUserView(View):
 
     def post(self, request):
         """用户绑定到openid"""
+        pass
         # TODO：
