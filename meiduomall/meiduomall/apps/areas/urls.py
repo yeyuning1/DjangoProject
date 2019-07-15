@@ -6,4 +6,5 @@ app_name = 'areas'
 urlpatterns = [
     url(r'^areas/$', views.ProvinceAreasView.as_view()),
     url(r'^areas/(?P<pk>[1-9]\d+)/$', views.SubAreasView.as_view()),
+    url(r'^addresses/create/$', views.CreateAddressView.as_view()),
 ]

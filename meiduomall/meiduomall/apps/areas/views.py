@@ -1,10 +1,14 @@
+import json
+import re
+
 from django.core.cache import cache
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views import View
 import logging
-from areas.models import Area
+from areas.models import Area, Address
 from meiduomall.utils.response_code import RETCODE
+from users.utils import LoginRequiredJSONMixin
 
 logger = logging.getLogger('django')
 
@@ -38,12 +42,12 @@ class ProvinceAreasView(View):
             except Exception as e:
                 # DBERR: 5000
                 return JsonResponse({'code': RETCODE.DBERR,
-                                          'errmsg': '省份数据错误'})
+                                     'errmsg': '省份数据错误'})
 
         # 3.响应省级数据
         return JsonResponse({'code': RETCODE.OK,
-                                  'errmsg': 'OK',
-                                  'province_list': province_list})
+                             'errmsg': 'OK',
+                             'province_list': province_list})
 
 
 class SubAreasView(View):
@@ -84,3 +88,86 @@ class SubAreasView(View):
 
         # 3.响应市或区数据
         return JsonResponse({'code': RETCODE.OK, 'errmsg': 'OK', 'sub_data': sub_data})
+
+
+class CreateAddressView(LoginRequiredJSONMixin, View):
+    """新增地址"""
+
+    def post(self, request):
+        # 获取地址的个数
+        count = request.user.addresses.count()
+        # 判断是否超过地址上限：最多20个
+        if count >= 20:
+            return JsonResponse({'code': RETCODE.THROTTLINGERR,
+                                 'errmsg': '超出地址数量上限'})
+
+        # 接收参数
+        json_dict = json.loads(request.body.decode())
+        receiver = json_dict.get('receiver')
+        province_id = json_dict.get('province_id')
+        city_id = json_dict.get('city_id')
+        district_id = json_dict.get('district_id')
+        place = json_dict.get('place')
+        mobile = json_dict.get('mobile')
+        tel = json_dict.get('tel')
+        email = json_dict.get('email')
+
+        # 校验参数
+        if not all([receiver, province_id, city_id, district_id, place, mobile]):
+            return HttpResponseForbidden('缺少必传参数')
+
+        if not re.match(r'^1[3-9]\d{9}$', mobile):
+            return HttpResponseForbidden('参数mobile有误')
+
+        if tel:
+            if not re.match(r'^(0[0-9]{2,3}-)?([2-9][0-9]{6,7})+(-[0-9]{1,4})?$', tel):
+                return HttpResponseForbidden('参数tel有误')
+
+        if email:
+            if not re.match(r'^[a-z0-9][\w\.\-]*@[a-z0-9\-]+(\.[a-z]{2,5}){1,2}$', email):
+                return HttpResponseForbidden('参数email有误')
+
+        # 保存地址信息
+        try:
+            address = Address.objects.create(
+                user=request.user,
+                title=receiver,
+                receiver=receiver,
+                province_id=province_id,
+                city_id=city_id,
+                district_id=district_id,
+                place=place,
+                mobile=mobile,
+                tel=tel,
+                email=email
+            )
+
+            # 设置默认地址
+            if not request.user.default_address:
+                request.user.default_address = address
+                request.user.save()
+
+        except Exception as e:
+            return JsonResponse({'code': RETCODE.DBERR,
+                                 'errmsg': '新增地址失败'})
+
+        # 新增地址成功，将新增的地址响应给前端实现局部刷新
+        address_dict = {
+            "id": address.id,
+            "title": address.title,
+            "receiver": address.receiver,
+            "province": address.province.name,
+            "city": address.city.name,
+            "district": address.district.name,
+            "place": address.place,
+            "mobile": address.mobile,
+            "tel": address.tel,
+            "email": address.email
+        }
+
+        # 响应保存结果
+        return JsonResponse({
+            'code': RETCODE.OK,
+            'errmsg': '新增地址成功',
+            'address': address_dict
+        })
