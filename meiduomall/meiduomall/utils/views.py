@@ -4,7 +4,7 @@ import re
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from meiduomall.utils.response_code import RETCODE
-from .models import User
+from users.models import User
 from django.utils.decorators import wraps
 
 

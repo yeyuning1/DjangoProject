@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
-from meiduomall.settings import dev
+from django.conf import settings
 from meiduomall.utils.response_code import RETCODE
 from oauth.models import OAuthQQUser
 from oauth.utils import generate_access_token, check_access_token
@@ -30,9 +30,9 @@ class QQURLView(View):
         # 获取 QQ 登录页面网址
         # 创建 OAuthQQ 类的对象
         next = request.GET.get('next')
-        oauth = OAuthQQ(client_id=dev.QQ_CLIENT_ID,
-                        client_secret=dev.QQ_CLIENT_SECRET,
-                        redirect_uri=dev.QQ_REDIRECT_URI,
+        oauth = OAuthQQ(client_id=settings.QQ_CLIENT_ID,
+                        client_secret=settings.QQ_CLIENT_SECRET,
+                        redirect_uri=settings.QQ_REDIRECT_URI,
                         state=next)
         # 调用对象的获取qq地址方法
         login_url = oauth.get_qq_url()
@@ -53,9 +53,9 @@ class QQUserView(View):
             return HttpResponseForbidden('缺少code')
 
         # 创建工具对象
-        oauth = OAuthQQ(client_id=dev.QQ_CLIENT_ID,
-                        client_secret=dev.QQ_CLIENT_SECRET,
-                        redirect_uri=dev.QQ_REDIRECT_URI)
+        oauth = OAuthQQ(client_id=settings.QQ_CLIENT_ID,
+                        client_secret=settings.QQ_CLIENT_SECRET,
+                        redirect_uri=settings.QQ_REDIRECT_URI)
 
         try:
             # 携带 code 向 QQ服务器 请求 access_token
