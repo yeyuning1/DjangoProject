@@ -12,13 +12,12 @@
     <script type="text/javascript" src="{{ static('js/host.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/vue-2.5.16.js') }}"></script>
     <script type="text/javascript" src="{{ static('js/axios-0.18.0.min.js') }}"></script>
-    <script src="{{ static('js/common.js') }}"></script>
 </head>
 <body>
 <div id="app" v-cloak>
     <div class="register_con">
         <div class="l_con fl">
-            <a href="index.html" class="reg_logo">
+            <a href="{{ url('contents:index') }}" class="reg_logo">
                 <!-- 修改下面的代码, 使 logo 图片能够显示出来 -->
                 <img src="{{ static('images/logo.png') }}"></a>
             <div class="reg_slogan">商品美 · 种类多 · 欢迎光临</div>
@@ -28,17 +27,17 @@
         <div class="r_con fr">
             <div class="reg_title clearfix">
                 <h1>用户注册</h1>
-                <a href="{{ url('users:login') }}">登录</a>
+                <a href="login.html">登录</a>
             </div>
             <div class="reg_form clearfix">
-                <form method="post" class="register_form" @submit="on_submit">
+                <form method="post" @submit="on_submit">
                     {{ csrf_input }}
                     <ul>
                         <li>
                             <label>用户名:</label>
                             <input v-model="username" @blur="check_username" type="text" name="username"
                                    id="user_name">
-                            <span v-show="error_name" class="error_tip">[[error_name_message]]</span>
+                            <span v-show="error_name" class="error_tip">请输入5-20个字符的用户</span>
                         </li>
                         <li>
                             <label>密码:</label>
@@ -52,8 +51,8 @@
                         </li>
                         <li>
                             <label>手机号:</label>
-                            <input v-model="mobile" @blur="check_phone" type="text" name="mobile" id="phone">
-                            <span v-show="error_phone" class="error_tip">[[error_phone_message]]</span>
+                            <input @blur="check_phone" v-model="mobile" type="text" name="mobile" id="phone">
+                            <span v-show="error_phone" class="error_tip">请输入正确的手机号码</span>
                         </li>
                         <li>
                             <label>图形验证码:</label>
@@ -89,9 +88,7 @@
                     </ul>
                 </form>
             </div>
-
         </div>
-
     </div>
 
     <div class="footer no-mp">
@@ -108,7 +105,7 @@
         <p>电话：010-****888 京ICP备*******8号</p>
     </div>
 </div>
-</body>
 <script type="text/javascript" src="{{ static('js/common.js') }}"></script>
 <script type="text/javascript" src="{{ static('js/register.js') }}"></script>
+</body>
 </html>

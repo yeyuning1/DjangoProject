@@ -28,9 +28,7 @@
                     <h1>绑定用户</h1>
                 </div>
                 <div class="reg_form clearfix">
-                    <form id="reg_form" method="post" @submit="on_submit">
-                        <input v-model="access_token" type="hidden" name="access_token" value="{{ access_token }}">
-                        {# 标记 #}
+                    <form method="post" id="reg_form" @submit="on_submit">
                         {{ csrf_input }}
                         <ul>
                             <li>
@@ -69,6 +67,7 @@
                                     <span class="error_tip">{{ qq_login_errmsg }}</span>
                                 {% endif %}
                             </li>
+                            <input v-model="access_token" type="hidden" name="access_token" value="{{ access_token }}">
                             <li class="reg_sub">
                                 <input type="submit" value="保 存" name="">
                             </li>

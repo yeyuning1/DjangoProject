@@ -20,7 +20,6 @@
                 <div v-if="username" class="login_btn fl">
                     欢迎您：<em>[[ username ]]</em>
                     <span>|</span>
-                    <!--修改如下代码,使其能够退出登录-->
                     <a href="{{ url('users:logout') }}">退出</a>
                 </div>
                 <div v-else class="login_btn fl">
@@ -30,7 +29,7 @@
                 </div>
                 <div class="user_link fl">
                     <span>|</span>
-                    <a href="{{ url('users:info') }}">用户中心</a>
+                    <a href="user_center_info.html">用户中心</a>
                     <span>|</span>
                     <a href="../static/cart.html">我的购物车</a>
                     <span>|</span>

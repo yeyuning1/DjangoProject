@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-    <title>美多商城-注册</title>
+    <title>美多商城-登录</title>
     <link rel="stylesheet" type="text/css" href="{{ static('css/reset.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ static('css/main.css') }}">
     <script type="text/javascript" src="{{ static('js/host.js') }}"></script>
@@ -13,10 +13,8 @@
 <body>
 <div id="app" v-cloak>
     <div class="login_top clearfix">
-        <a href="{{ url('contents:index') }}" class="login_logo">
-            <!--更改前端图标的代码, 使用 static() 的形式添加: -->
-            <img src="{{ static('images/logo02.png') }}">
-        </a>
+        <a href="index.html" class="login_logo"><!--更改前端图标的代码, 使用 static() 的形式添加: -->
+            <img src="{{ static('images/logo02.png') }}"></a>
     </div>
     <div class="login_form_bg">
         <div class="login_form_wrap clearfix">
@@ -62,9 +60,9 @@
                     </div>
                 </div>
                 <div class="third_party">
-                    <a @click="qq_login" class="qq_login">QQ</a>
+                    <a  @click="qq_login" class="qq_login">QQ</a>
                     <a href="#" class="weixin_login">微信</a>
-                    <a href="{{ url('users:register') }}" class="register_btn">立即注册</a>
+                    <a href="register.html" class="register_btn">立即注册</a>
                 </div>
 
             </div>
@@ -85,7 +83,7 @@
         <p>电话：010-****888 京ICP备*******8号</p>
     </div>
 </div>
-<script type="text/javascript" src="{{ static('js/login.js') }}"></script>
-<script type="text/javascript" src="{{ static('js/common.js') }}"></script>
+<script type="text/javascript" src="../static/js/common.js"></script>
+<script type="text/javascript" src="../static/js/login.js"></script>
 </body>
 </html>

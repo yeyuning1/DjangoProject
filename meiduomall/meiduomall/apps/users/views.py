@@ -216,3 +216,13 @@ class EmailView(LoginRequiredJSONMixin, View):
         # send_verify_email.delay(email, verify_url)  # TODO：邮箱问题
         # 响应添加邮箱的结果
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
+
+
+# -------------------------------------------------
+# 以下为收货地址
+class AddressView(LoginRequiredMixin, View):
+    """用户收获地址"""
+
+    def get(self, request):
+        """提供收获地址界面"""
+        return render(request, 'user_center_site.html')
