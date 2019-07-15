@@ -1,14 +1,12 @@
 import random
-from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render
-# Create your views here.
+from django.http import HttpResponse, JsonResponse, HttpResponseForbidden
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
-
-from celery_tasks.sms.tasks import ccp_send_sms_code
 from meiduomall.libs.captcha.captcha import captcha
-from meiduomall.libs.yuntongxun.ccp_sms import CCP
 from meiduomall.utils.response_code import RETCODE
+from users.models import User
 from verifications import constants
 import logging
 
@@ -97,3 +95,33 @@ class SendSmsCodeView(View):
         pl.setex('send_flag_%s' % mobile, constants.SEND_SMS_CODE_INTERVAL, 1)
         pl.execute()
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '发送短信成功'})
+
+
+class VerifyEmailView(View):
+    """验证邮箱"""
+
+    def get(self, request):
+        """实现邮箱验证逻辑"""
+        # 接收参数
+        token = request.GET.get('token')
+
+        # 检验参数：判断 token 是否为空
+        if not token:
+            return HttpResponseForbidden('缺少token')
+
+        # 调用上面封装好的方法，将 token 传入
+        user = User.check_verify_email_token(token)
+
+        if not user:
+            return HttpResponseForbidden('无效的token')
+
+        # 修改 email_active 的值为 True
+        try:
+            user.email_active = True
+            user.save()
+        except Exception as e:
+            logger.error(e)
+            return HttpResponseForbidden('激活邮件失败')
+
+        # 返回邮箱验证结果
+        return redirect(reverse('users:info'))

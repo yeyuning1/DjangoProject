@@ -217,33 +217,3 @@ class EmailView(LoginRequiredJSONMixin, View):
         send_verify_email.delay(email, verify_url)  # TODO：邮箱问题异步待解决
         # 响应添加邮箱的结果
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
-
-
-class VerifyEmailView(View):
-    """验证邮箱"""
-
-    def get(self, request):
-        """实现邮箱验证逻辑"""
-        # 接收参数
-        token = request.GET.get('token')
-
-        # 检验参数：判断 token 是否为空
-        if not token:
-            return HttpResponseForbidden('缺少token')
-
-        # 调用上面封装好的方法，将 token 传入
-        user = User.check_verify_email_token(token)
-
-        if not user:
-            return HttpResponseForbidden('无效的token')
-
-        # 修改 email_active 的值为 True
-        try:
-            user.email_active = True
-            user.save()
-        except Exception as e:
-            logger.error(e)
-            return HttpResponseForbidden('激活邮件失败')
-
-        # 返回邮箱验证结果
-        return redirect(reverse('users:info'))
