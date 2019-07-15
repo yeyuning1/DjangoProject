@@ -18,6 +18,14 @@ class User(AbstractUser):
     # 用于记录邮箱是否激活, 默认为 False: 未激活
     email_active = models.BooleanField(default=False, verbose_name='邮箱验证状态')
 
+    # 新增
+    default_address = models.ForeignKey('areas.Address',
+                                        related_name='users',
+                                        null=True,
+                                        blank=True,
+                                        on_delete=models.SET_NULL,
+                                        verbose_name='默认地址')
+
     # 对当前表进行相关设置:
     class Meta:
         db_table = 'tb_users'
