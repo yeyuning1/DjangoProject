@@ -8,9 +8,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
-from celery_tasks.email.tasks import send_verify_email
 from meiduomall.utils.response_code import RETCODE
-from meiduomall.utils.views import LoginRequiredMixin, LoginRequiredJSONMixin
+from users.utils import LoginRequiredMixin, LoginRequiredJSONMixin
 from .models import User
 
 logger = logging.getLogger('django')
@@ -214,6 +213,6 @@ class EmailView(LoginRequiredJSONMixin, View):
             return JsonResponse({'code': RETCODE.DBERR, 'errmsg': '添加邮箱失败'})
         verify_url = request.user.generate_verify_email_url()
         print(verify_url)
-        send_verify_email.delay(email, verify_url)  # TODO：邮箱问题异步待解决
+        # send_verify_email.delay(email, verify_url)  # TODO：邮箱问题
         # 响应添加邮箱的结果
         return JsonResponse({'code': RETCODE.OK, 'errmsg': '添加邮箱成功'})
