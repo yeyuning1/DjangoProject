@@ -261,6 +261,6 @@ EMAIL_HOST_USER = 'yeyuning66@163.com'
 # 在邮箱中设置的客户端授权密码
 EMAIL_HOST_PASSWORD = 'yeyuning1'
 # 收件人看到的发件人
-EMAIL_FROM = 'yeyuning'
+EMAIL_FROM = 'yeyuning<yeyuning66@163.com>'
 # 邮箱验证链接
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
