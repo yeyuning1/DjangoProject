@@ -237,10 +237,12 @@ class ChangePasswordView(LoginRequiredJSONMixin, View):
         if not all([old_password, new_password, new_password2]):
             return HttpResponseForbidden('缺少必要参数')
         try:
-            request.user.check_password(old_password)
+            right = request.user.check_password(old_password)
+            if not right:
+                raise Exception()
         except Exception as e:
             logger.error(e)
-            return render(request, 'user_center_pass.html', {'origin_pwd_errmsg': '原始密码错误'})
+            return render(request, 'user_center_pass.html', {'origin_pwd_errmsg': '校验密码失败'})
 
         if not re.match(r'^[0-9A-Za-z]{8,20}$', new_password):
             return HttpResponseForbidden('密码最少8位，最长20位')
@@ -258,7 +260,7 @@ class ChangePasswordView(LoginRequiredJSONMixin, View):
 
         # 清理状态保持信息
         logout(request)
-        response = redirect(reverse('user:login'))
+        response = redirect(reverse('users:login'))
         response.delete_cookie('username')
 
         # # 响应密码修改结果:重定向到登陆界面
