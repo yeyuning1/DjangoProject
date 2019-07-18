@@ -264,3 +264,10 @@ EMAIL_HOST_PASSWORD = 'yeyuning1'
 EMAIL_FROM = 'yeyuning<yeyuning66@163.com>'
 # 邮箱验证链接
 EMAIL_VERIFY_URL = 'http://www.meiduo.site:8000/emails/verification/'
+
+# FDFS客户端的配置文件.
+FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
+# 访问FDFS中存储的文件时,地址有可能变化, 所以我们把地址放在这里记录:
+FDFS_URL = 'http://123.207.197.108:8888/'
+# 指定django系统使用的文件存储类:
+DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fastdfs_storage.FastDFSStorage'

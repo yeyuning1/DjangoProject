@@ -4,12 +4,11 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <title>美多商城-用户中心</title>
-    <link rel="stylesheet" type="text/css" href="{{ static('css/reset.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ static('css/main.css') }}">
-    <script type="text/javascript" src="{{ static('js/jquery-1.12.4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ static('js/host.js') }}"></script>
-    <script type="text/javascript" src="{{ static('js/vue-2.5.16.js') }}"></script>
-    <script type="text/javascript" src="{{ static('js/axios-0.18.0.min.js') }}"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/reset.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/main.css">
+    <script type="text/javascript" src="../static/js/host.js"></script>
+    <script type="text/javascript" src="../static/js/vue-2.5.16.js"></script>
+    <script type="text/javascript" src="../static/js/axios-0.18.0.min.js"></script>
 </head>
 <body>
 <div id="app" v-cloak>
@@ -28,8 +27,6 @@
                     <span>|</span>
                     <a href="register.html">注册</a>
                 </div>
-
-
                 <div class="user_link fl">
                     <span>|</span>
                     <!--修改下面的代码, 使当前的 a 标签点击后,能够跳转到用户中心页面-->
@@ -65,7 +62,7 @@
             <ul>
                 <li><a href="{{ url('users:info') }}" class="active">· 个人信息</a></li>
                 <li><a href="../static/user_center_order.html">· 全部订单</a></li>
-                <li><a href="{{ url('users:address') }}">· 收货地址</a></li>
+                <li><a href="{{ url('users:addresses') }}">· 收货地址</a></li>
                 <li><a href="{{ url('users:pass') }}">· 修改密码</a></li>
             </ul>
         </div>

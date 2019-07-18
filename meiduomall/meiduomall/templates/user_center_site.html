@@ -17,28 +17,32 @@
         <div class="header">
             <div class="welcome fl">欢迎来到美多商城!</div>
             <div class="fr">
-                <div class="login_info fl">
-                    欢迎您：<em>张 山</em>
+                <div v-if="username" class="login_btn fl">
+                    欢迎您：<em>[[ username ]]</em>
+                    <span>|</span>
+                    <!--修改如下代码,使其能够退出登录-->
+                    <a href="{{ url('users:logout') }}">退出</a>
                 </div>
-                <div class="login_btn fl">
+                <div v-else class="login_btn fl">
                     <a href="login.html">登录</a>
                     <span>|</span>
                     <a href="register.html">注册</a>
                 </div>
                 <div class="user_link fl">
                     <span>|</span>
-                    <a href="user_center_info.html">用户中心</a>
-                    <span>|</span>
-                    <a href="../static/cart.html">我的购物车</a>
-                    <span>|</span>
-                    <a href="../static/user_center_order.html">我的订单</a>
+                    <!--修改下面的代码, 使当前的 a 标签点击后,能够跳转到用户中心页面-->
+                    <a href="{{ url('users:info') }}">用户中心</a>
+                    <span> | </span>
+                    <a href="cart.html">我的购物车</a>
+                    <span> | </span>
+                    <a href="user_center_order.html">我的订单</a>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="search_bar clearfix">
-        <a href="index.html" class="logo fl"><img src="../static/images/logo.png"></a>
+        <a href="{{ url('contents:index') }}" class="logo fl"><img src="../static/images/logo.png"></a>
         <div class="search_wrap fl">
             <form method="get" action="/search/" class="search_con">
                 <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
@@ -59,9 +63,10 @@
             <ul>
                 <li><a href="{{ url('users:info') }}">· 个人信息</a></li>
                 <li><a href="../static/user_center_order.html">· 全部订单</a></li>
-                <li><a href="{{ url('users:address') }}" class="active">· 收货地址</a></li>
+                <li><a href="{{ url('users:addresses') }}" class="active">· 收货地址</a></li>
                 <li><a href="{{ url('users:pass') }}">· 修改密码</a></li>
             </ul>
+
         </div>
         <div class="right_content clearfix">
             <div class="site_top_con">
@@ -95,6 +100,8 @@
                     <a @click="show_edit_site(index)" class="edit_icon">编辑</a>
                 </div>
             </div>
+
+
         </div>
     </div>
     <div class="footer">
@@ -177,9 +184,8 @@
     </div>
 </div>
 <script type="text/javascript">
-    {#let username = "{{ username }}";#}
-    {#let addresses = "{{ addresses | safe }}";#}
-    {#let default_address_id = "{{ default_address_id }}";#}
+    let addresses = {{ addresses | safe }};
+    let default_address_id = {{ default_address_id }};
 </script>
 <script type="text/javascript" src="{{ static('js/common.js') }}"></script>
 <script type="text/javascript" src="{{ static('js/user_center_site.js') }}"></script>
