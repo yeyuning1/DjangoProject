@@ -1,11 +1,10 @@
 # 导入
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # 我们重写用户模型类, 继承自 AbstractUser
 from itsdangerous import TimedJSONWebSignatureSerializer, BadData
-
-from meiduomall.settings import dev
 
 
 class User(AbstractUser):
@@ -43,7 +42,7 @@ class User(AbstractUser):
         """
         # 调用 itsdangerous 中的类，生成对象
         # 有效期:1天
-        serializer = TimedJSONWebSignatureSerializer(dev.SECRET_KEY,
+        serializer = TimedJSONWebSignatureSerializer(settings.SECRET_KEY,
                                                      expires_in=60 * 60 * 24)
         # 拼接参数
         data = {'user_id': self.id, 'email': self.email}
@@ -51,7 +50,7 @@ class User(AbstractUser):
         # 生成 token 值，这个值是 bytes 类型，所以解码为 str:
         token = serializer.dumps(data).decode()
         # 拼接 url
-        verify_url = dev.EMAIL_VERIFY_URL + '?token=' + token
+        verify_url = settings.EMAIL_VERIFY_URL + '?token=' + token
         # 返回
         return verify_url
 
@@ -64,7 +63,7 @@ class User(AbstractUser):
         """
         # 调用 itsdangerous 类，生成对象
         # 邮件验证链接有效期：一天
-        serializer = TimedJSONWebSignatureSerializer(dev.SECRET_KEY,
+        serializer = TimedJSONWebSignatureSerializer(settings.SECRET_KEY,
                                                      expires_in=60 * 60 * 24)
         try:
             # 解析传入的token值，获取数据 data

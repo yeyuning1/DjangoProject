@@ -1,5 +1,4 @@
 from django.db import models
-
 from meiduomall.utils.models import BaseModel
 
 
@@ -23,7 +22,7 @@ class GoodsCategory(BaseModel):
         return self.name
 
 
-class GoodChannel(BaseModel):
+class GoodsChannel(BaseModel):
     """
     商品频道表展示的内容
     """

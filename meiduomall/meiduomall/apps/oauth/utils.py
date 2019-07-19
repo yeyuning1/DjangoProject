@@ -1,6 +1,7 @@
+from django.conf import settings
 from itsdangerous import TimedJSONWebSignatureSerializer, BadData
 
-from meiduomall.settings import dev
+
 from oauth import constants
 
 
@@ -14,7 +15,7 @@ def generate_access_token(openid):
     # QQ 登录保存用户数据的token有效期
     # setting.SECRET_KEY:加密使用的密钥
     # SAVE_QQ_USER_TOKEN_EXPIRES = 600: 过期时间
-    serializer = TimedJSONWebSignatureSerializer(dev.SECRET_KEY,
+    serializer = TimedJSONWebSignatureSerializer(settings.SECRET_KEY,
                                                  expires_in=constants.ACCESS_TOKEN_EXPIRES)
     data = {'openid': openid}
     token = serializer.dumps(data)
@@ -27,7 +28,7 @@ def check_access_token(access_token):
     :param access_token: 用户请求携带的access_token
     :return: openid or None
     """
-    serializer = TimedJSONWebSignatureSerializer(dev.SECRET_KEY,
+    serializer = TimedJSONWebSignatureSerializer(settings.SECRET_KEY,
                                                  expires_in=constants.SAVE_QQ_USER_TOKEN_EXPIRES)
 
     try:

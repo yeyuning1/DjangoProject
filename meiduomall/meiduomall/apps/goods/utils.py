@@ -1,14 +1,14 @@
 from collections import OrderedDict
-from goods.models import GoodChannel
+from .models import GoodsChannel
 
 
 def get_categories():
     """
     获取商城商品分类菜单
-    :return: 菜单字典
+    :return 菜单字典
     """
     # 商品频道及分类菜单
-    # 下面的代码生成的模板
+    # 下面的代码生成的模板:
     # categories = {
     #  (1,  # 组1
     #       {'channels': [{'id': 1, 'name': '手机','url':'http://shouji.jd.com'},
@@ -32,21 +32,22 @@ def get_categories():
     # 第一部分: 从数据库中取数据:
     # 定义一个有序字典对象
     categories = OrderedDict()
-    # 对 GoodsChannel 进行 group_id 和 sequence 排序, 获取排序后的结果
-    channels = GoodChannel.objects.order_by('group_id', 'sequence')
+    # 对 GoodsChannel 进行 group_id 和 sequence 排序, 获取排序后的结果:
+    channels = GoodsChannel.objects.order_by('group_id', 'sequence')
     # 遍历排序后的结果: 得到所有的一级菜单( 即,频道 )
     for channel in channels:
         # 从频道中得到当前的 组id
         group_id = channel.group_id
 
-        # 如果当前组 id 不在有序字典中
+        # 判断: 如果当前 组id 不在我们的有序字典中:
         if group_id not in categories:
-            # 把组 id 添加到有序字典中
-            # 作为key值，并且 value值是{'channels': [], 'sub_cats': []}
+            # 我们就把 组id 添加到 有序字典中
+            # 并且作为 key值, value值 是 {'channels': [], 'sub_cats': []}
             categories[group_id] = {'channels': [], 'sub_cats': []}
 
         # 获取当前频道的分类名称
         cat1 = channel.category
+
         # 给刚刚创建的字典中, 追加具体信息:
         # 即, 给'channels' 后面的 [] 里面添加如下的信息:
         categories[group_id]['channels'].append({
@@ -54,17 +55,16 @@ def get_categories():
             'name': cat1.name,
             'url': channel.url
         })
-        # 自连接查询
+
         # 根据 cat1 的外键反向, 获取下一级(二级菜单)的所有分类数据, 并遍历:
         for cat2 in cat1.goodscategory_set.all():
-            # 创建一个新的列表
+            # 创建一个新的列表:
             cat2.sub_cats = []
             # 根据 cat2 的外键反向, 获取下一级(三级菜单)的所有分类数据, 并遍历:
             for cat3 in cat2.goodscategory_set.all():
-                # 拼接新的列表: key: 二级菜单名称, Value:三级菜单组成的列表
+                # 拼接新的列表: key: 二级菜单名称, value: 三级菜单组成的列表
                 cat2.sub_cats.append(cat3)
-
-            # 所有的内容增加到以及菜单生成的有序字典中去：
-            categories[group_id]['channel'].append(cat2)
+            # 所有内容在增加到 一级菜单生成的 有序字典中去:
+            categories[group_id]['sub_cats'].append(cat2)
 
     return categories

@@ -102,8 +102,8 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
         'HOST': '127.0.0.1',  # 数据库主机
         'PORT': 3306,  # 数据库端口
-        'USER': 'itcast',  # 数据库用户名
-        'PASSWORD': '123456',  # 数据库用户密码
+        'USER': 'yeyuning',  # 数据库用户名
+        'PASSWORD': 'yeyuning',  # 数据库用户密码
         'NAME': 'meiduo_mall'  # 数据库名字
     },
 }
@@ -270,4 +270,4 @@ FDFS_CLIENT_CONF = os.path.join(BASE_DIR, 'utils/fastdfs/client.conf')
 # 访问FDFS中存储的文件时,地址有可能变化, 所以我们把地址放在这里记录:
 FDFS_URL = 'http://123.207.197.108:8888/'
 # 指定django系统使用的文件存储类:
-DEFAULT_FILE_STORAGE = 'meiduo_mall.utils.fastdfs.fastdfs_storage.FastDFSStorage'
+DEFAULT_FILE_STORAGE = 'meiduomall.utils.fastdfs.fastdfs_storage.FastDFSStorage'
