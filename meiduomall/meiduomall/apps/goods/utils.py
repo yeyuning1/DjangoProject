@@ -68,3 +68,37 @@ def get_categories():
             categories[group_id]['sub_cats'].append(cat2)
 
     return categories
+
+
+def get_breadcrumb(category):
+    """
+    获取面包屑导航
+    :param category: 商品类别
+    :return: 面包屑导航字典
+    """
+
+    # 定义一个字典
+    breadcrumb = dict(
+        cat1='',
+        cat2='',
+        cat3=''
+    )
+
+    # 判断 category 是哪一个级别
+    # 注意: 这里的 category 是 GoodsCategory 对象
+    if category.parent is None:
+        # 当前类别为一级类别
+        breadcrumb['cat1'] = category
+    # 因为这个表表示自关联, 关联对象还是自己
+    elif category.goodscategory_set.count() == 0:
+        # 当前类别为三级
+        breadcrumb['cat3'] = category
+        cat2 = category.parent
+        breadcrumb['cat2'] = cat2
+        breadcrumb['cat1'] = cat2.parent
+    else:
+        # 当前类别为二级
+        breadcrumb['cat2'] = category
+        breadcrumb['cat1'] = category.parent
+
+    return breadcrumb
