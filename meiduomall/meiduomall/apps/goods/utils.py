@@ -102,3 +102,7 @@ def get_breadcrumb(category):
         breadcrumb['cat1'] = category.parent
 
     return breadcrumb
+
+
+def get_goods_and_spec(sku_id, request):
+    pass

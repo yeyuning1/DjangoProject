@@ -91,3 +91,28 @@ class HotGoodsView(View):
             'errmsg': 'ok',
             'hot_skus': hot_skus
         })
+
+
+class DetailView(View):
+    """商品详情页"""
+
+    def get(self, request, sku_id):
+        """提供商品详情页"""
+        # 获取当前sku信息
+        try:
+            # 根据商品的 sku_id 获取对应的商品
+            sku = SKU.objects.get(id=sku_id)
+
+        except SKU.DoesNotExist:
+            # 如果商品不存在，返回 404
+            return render(request, '404html')
+
+        # 查询商品频道分类
+        categories = get_categories()
+
+        # 渲染页面
+        context = {
+            'categories': categories,
+            'sku': sku
+        }
+        return render(request, 'detail.html', context)
