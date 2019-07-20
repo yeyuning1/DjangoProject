@@ -1,11 +1,16 @@
+import json
+
 from django.core.paginator import Paginator, EmptyPage
-from django.http import HttpResponseNotFound, JsonResponse
+from django.http import HttpResponseNotFound, JsonResponse, HttpResponseForbidden
 from django.shortcuts import render
 from django.views import View
+from django_redis import get_redis_connection
+
 from goods.models import GoodsCategory, SKU
 from goods.utils import get_categories, get_breadcrumb, get_goods_and_spec
 from meiduomall.utils.response_code import RETCODE
 from goods.utils import get_goods_and_spec
+from users.utils import LoginRequiredJSONMixin
 
 
 class ListView(View):
@@ -123,3 +128,67 @@ class DetailView(View):
         return render(request, 'detail.html', context)
 
 
+class UserBrowseHistory(LoginRequiredJSONMixin, View):
+    """用户浏览记录"""
+
+    def post(self, request):
+        """保存用户浏览记录"""
+        # 接收参数
+        json_dict = json.loads(request.body.decode())
+        sku_id = json_dict.get('skuid')
+
+        # 校验参数
+        try:
+            SKU.objects.get(id=sku_id)
+        except SKU.DoesNotExist:
+            return HttpResponseForbidden('sku不存在')
+
+        # 保存用户浏览数据
+        redis_conn = get_redis_connection('history')
+        pl = redis_conn.pipeline()
+        user_id = request.user.id
+
+        # 先去重：这里给0 掉膘取出所有的 sku_id
+        pl.lrem('history_%s' % user_id, 0, sku_id)
+
+        # 再存储
+        pl.lpush('history_%s' % user_id, sku_id)
+
+        # 最后截取： 界面有限，只保留五个
+        pl.ltirm('history_%s' % user_id, 0, 4)
+
+        # 执行管道
+        pl.execute()
+
+        # 响应结果
+        return JsonResponse({
+            'code': RETCODE.OK,
+            'errmsg': 'ok'
+        })
+
+
+class UserBrowseHistory(LoginRequiredJSONMixin, View):
+    """用户浏览记录"""
+
+    def get(self, request):
+        """获取用户浏览记录"""
+
+        # 获取redis存储的sku_id列表信息
+        redis_conn = get_redis_connection('history')
+        sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
+
+        # 根据sku_ids列表数据，查询出商品sku
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': sku.default_image_url,
+                'price': sku.price
+            })
+
+        return JsonResponse({
+            'code': RETCODE.OK,
+            'skus': skus
+        })
