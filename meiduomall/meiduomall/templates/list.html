@@ -308,61 +308,20 @@
             <ul class="goods_type_list clearfix">
                 {% for sku in page_skus %}
                     <li>
-                        <a href="detail.html">
+                        <a href="{{ url('goods:detail', args=(sku.id,)) }}">
                             <img src="{{ sku.default_image_url }}">
                         </a>
                         <h4>
-                            <a href="detail.html">
-                                {{ sku.name }}
-                            </a>
+                            <a href="{{ url('goods:detail', args=(sku.id,)) }}">{{ sku.name }}</a>
                         </h4>
                         <div class="operate">
-                    <span class="price">
-                        ￥{{ sku.price }}
-                    </span>
-                            <span class="unit">
-                        台
-                    </span>
-                            <a href="#" class="add_goods" title="加入购物车">
-                            </a>
+                            <span class="price">￥{{ sku.price }}</span>
+                            <span class="unit">台</span>
+                            <a href="#" class="add_goods" title="加入购物车"></a>
                         </div>
                     </li>
                 {% endfor %}
             </ul>
-
-            <ul class="goods_type_list clearfix">
-                <li>
-                    <a href="detail.html"><img src="{{ static('images/goods/goods003.jpg') }}"></a>
-                    <h4><a href="detail.html">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                    <div class="operate">
-                        <span class="price">￥16.80</span>
-                        <span class="unit">台</span>
-                        <a href="#" class="add_goods" title="加入购物车"></a>
-                    </div>
-                </li>
-                <li>
-                    <a href="#"><img src="{{ static('images/goods/goods005.jpg') }}"></a>
-                    <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                    <div class="operate">
-                        <span class="price">￥10.00</span>
-                        <span class="unit">台</span>
-                        <a href="#" class="add_goods" title="加入购物车"></a>
-                    </div>
-                </li>
-                <li>
-                    <a href="#">
-                        <img src="{{ static('images/goods/goods002.jpg') }}">
-
-                    </a>
-                    <h4><a href="#">360手机 N6 Pro 全网通 6GB+128GB 极夜黑</a></h4>
-                    <div class="operate">
-                        <span class="price">￥28.80</span>
-                        <span class="unit">台</span>
-                        <a href="#" class="add_goods" title="加入购物车"></a>
-                    </div>
-                </li>
-            </ul>
-
             <!-- 分页器: -->
             <div class="pagenation">
                 <div id="pagination" class="page"></div>

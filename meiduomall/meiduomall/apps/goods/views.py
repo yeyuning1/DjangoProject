@@ -3,8 +3,9 @@ from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render
 from django.views import View
 from goods.models import GoodsCategory, SKU
-from goods.utils import get_categories, get_breadcrumb
+from goods.utils import get_categories, get_breadcrumb, get_goods_and_spec
 from meiduomall.utils.response_code import RETCODE
+from goods.utils import get_goods_and_spec
 
 
 class ListView(View):
@@ -94,25 +95,31 @@ class HotGoodsView(View):
 
 
 class DetailView(View):
-    """商品详情页"""
 
     def get(self, request, sku_id):
         """提供商品详情页"""
-        # 获取当前sku信息
-        try:
-            # 根据商品的 sku_id 获取对应的商品
-            sku = SKU.objects.get(id=sku_id)
 
-        except SKU.DoesNotExist:
-            # 如果商品不存在，返回 404
-            return render(request, '404html')
-
-        # 查询商品频道分类
+        # 商品分类菜单
         categories = get_categories()
 
-        # 渲染页面
+        # 调用封装的函数, 根据 sku_id 获取对应的
+        # 1. 类别( sku )
+        # 2. 商品( goods )
+        # 3. 商品规格( spec )
+        data = get_goods_and_spec(sku_id, request)
+
+        # 获取面包屑导航:
+        breadcrumb = get_breadcrumb(data['goods'].category3)
+
+        # 拼接参数，生成静态 html 文件
         context = {
             'categories': categories,
-            'sku': sku
+            'goods': data.get('goods'),
+            'specs': data.get('goods_specs'),
+            'sku': data.get('sku'),
+            'breadcrumb': breadcrumb
         }
+
         return render(request, 'detail.html', context)
+
+
