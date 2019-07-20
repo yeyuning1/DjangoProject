@@ -1,10 +1,10 @@
 from django.core.paginator import Paginator, EmptyPage
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, JsonResponse
 from django.shortcuts import render
 from django.views import View
-
 from goods.models import GoodsCategory, SKU
 from goods.utils import get_categories, get_breadcrumb
+from meiduomall.utils.response_code import RETCODE
 
 
 class ListView(View):
@@ -66,3 +66,28 @@ class ListView(View):
             'page_num': page_num,  # 当前页码
         }
         return render(request, 'list.html', context)
+
+
+class HotGoodsView(View):
+    """商品热销排行"""
+
+    def get(self, request, category_id):
+        """提供商品热销排行 JSON 数据"""
+        # 根据销量倒叙
+        skus = SKU.objects.filter(category_id=category_id,
+                                  is_launched=True).order_by('-sales')[:2]
+        # 序列化
+        hot_skus = []
+        for sku in skus:
+            hot_skus.append({
+                'id': sku.id,
+                'default_image_url': sku.default_image_url,
+                'name': sku.name,
+                'price': sku.price
+            })
+
+        return JsonResponse({
+            'code': RETCODE.OK,
+            'errmsg': 'ok',
+            'hot_skus': hot_skus
+        })

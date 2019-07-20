@@ -8,7 +8,7 @@ from django.conf import settings
 class FastDFSStorage(Storage):
 
     def save(self, name, content, max_length=None):
-        '''重写上传文件的函数'''
+        """重写上传文件的函数"""
 
         # 我们需要将文件上传到 FastDFS 上面.
         # 创建客户端对象:
