@@ -1,5 +1,4 @@
 import json
-
 from django.core.paginator import Paginator, EmptyPage
 from django.http import HttpResponseNotFound, JsonResponse, HttpResponseForbidden
 from django.shortcuts import render
