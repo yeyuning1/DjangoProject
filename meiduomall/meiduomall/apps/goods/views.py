@@ -1,15 +1,17 @@
-import json
+import datetime
+import logging
 from django.core.paginator import Paginator, EmptyPage
-from django.http import HttpResponseNotFound, JsonResponse, HttpResponseForbidden
+from django.http import HttpResponseNotFound, JsonResponse, HttpResponseForbidden, HttpResponseServerError
 from django.shortcuts import render
+from django.utils import timezone
 from django.views import View
-from django_redis import get_redis_connection
-
-from goods.models import GoodsCategory, SKU
+from goods.models import GoodsCategory, SKU, GoodsVisitCount
 from goods.utils import get_categories, get_breadcrumb, get_goods_and_spec
 from meiduomall.utils.response_code import RETCODE
 from goods.utils import get_goods_and_spec
-from users.utils import LoginRequiredJSONMixin
+
+
+logger = logging.getLogger('django')
 
 
 class ListView(View):
@@ -127,67 +129,45 @@ class DetailView(View):
         return render(request, 'detail.html', context)
 
 
-class UserBrowseHistory(LoginRequiredJSONMixin, View):
-    """用户浏览记录"""
+class DetailVisitView(View):
+    """详情页分类商品访问量"""
 
-    def post(self, request):
-        """保存用户浏览记录"""
-        # 接收参数
-        json_dict = json.loads(request.body.decode())
-        sku_id = json_dict.get('skuid')
+    def post(self, request, category_id):
+        """记录分类商品访问量"""
 
-        # 校验参数
+        # 根据传入的 category_id 值，获取对应类别的商品
         try:
-            SKU.objects.get(id=sku_id)
-        except SKU.DoesNotExist:
-            return HttpResponseForbidden('sku不存在')
+            category = GoodsCategory.objects.get(id=category_id)
+        except GoodsCategory.DoesNotExist:
+            return HttpResponseForbidden('缺少必传参数')
 
-        # 保存用户浏览数据
-        redis_conn = get_redis_connection('history')
-        pl = redis_conn.pipeline()
-        user_id = request.user.id
+        # 获取今天的日期
+        # 先获取时间对象
+        t = timezone.localtime()
+        # 根据时间对象拼接日期的
+        today_str = '%d-%02d-%02d' % (t.year, t.month, t.day)
+        # 将字符串转为日期格式
+        today_date = datetime.datetime.strptime(today_str, '%Y-%m-%d')
+        try:
+            # 将今天的日期传入进去，获取该商品今天的访问量
+            # 查询今天该类别的商品的访问量
+            category.goodsvisitcount_set.get(date=today_date)
+        except GoodsVisitCount.DoesNotExist:
+            # 如果该类别的商品在今天没有过访问记录，就新建一个访问记录
+            counts_data = GoodsVisitCount()
 
-        # 先去重：这里给0 掉膘取出所有的 sku_id
-        pl.lrem('history_%s' % user_id, 0, sku_id)
+        try:
+            # 更新模型类对象里面的属性：category 和 count
+            counts_data.category = category
+            counts_data.count += 1
+            counts_data.save()
+        except Exception as e:
+            logger.error(e)
+            return HttpResponseServerError('服务器异常')
 
-        # 再存储
-        pl.lpush('history_%s' % user_id, sku_id)
-
-        # 最后截取： 界面有限，只保留五个
-        pl.ltirm('history_%s' % user_id, 0, 4)
-
-        # 执行管道
-        pl.execute()
-
-        # 响应结果
         return JsonResponse({
             'code': RETCODE.OK,
             'errmsg': 'ok'
         })
 
 
-class UserBrowseHistory(LoginRequiredJSONMixin, View):
-    """用户浏览记录"""
-
-    def get(self, request):
-        """获取用户浏览记录"""
-
-        # 获取redis存储的sku_id列表信息
-        redis_conn = get_redis_connection('history')
-        sku_ids = redis_conn.lrange('history_%s' % request.user.id, 0, -1)
-
-        # 根据sku_ids列表数据，查询出商品sku
-        skus = []
-        for sku_id in sku_ids:
-            sku = SKU.objects.get(id=sku_id)
-            skus.append({
-                'id': sku.id,
-                'name': sku.name,
-                'default_image_url': sku.default_image_url,
-                'price': sku.price
-            })
-
-        return JsonResponse({
-            'code': RETCODE.OK,
-            'skus': skus
-        })
