@@ -29,12 +29,11 @@
                 </div>
                 <div class="user_link fl">
                     <span>|</span>
-                    <!--修改下面的代码, 使当前的 a 标签点击后,能够跳转到用户中心页面-->
                     <a href="{{ url('users:info') }}">用户中心</a>
-                    <span> | </span>
-                    <a href="cart.html">我的购物车</a>
-                    <span> | </span>
-                    <a href="user_center_order.html">我的订单</a>
+                    <span>|</span>
+                    <a href="{{ url('carts:info') }}">我的购物车</a>
+                    <span>|</span>
+                    <a href="../static/user_center_order.html">我的订单</a>
                 </div>
             </div>
         </div>
