@@ -278,6 +278,8 @@ class AddressView(LoginRequiredMixin, View):
         return render(request, 'user_center_site.html')
 
 
+# -------------------------------------------------
+# 以下为浏览记录
 class UserBrowseHistory(LoginRequiredJSONMixin, View):
     """用户浏览记录"""
 
