@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'areas',
     'goods',
     'haystack',
-    'carts'
+    'carts',
+    'orders',
 ]
 
 MIDDLEWARE = [
