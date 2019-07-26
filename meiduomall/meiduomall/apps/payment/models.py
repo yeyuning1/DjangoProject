@@ -1,6 +1,6 @@
 from django.db import models
 
-from meiduomall.utils.models import BaseModel
+from scripts import BaseModel
 from orders.models import OrderInfo
 
 

@@ -11,7 +11,7 @@ from django.views import View
 from django_redis import get_redis_connection
 from areas.models import Address
 from goods.models import SKU
-from meiduomall.utils.response_code import RETCODE
+from scripts import RETCODE
 from orders.models import OrderInfo, OrderGoods
 from users.utils import LoginRequiredJSONMixin, LoginRequiredMixin
 

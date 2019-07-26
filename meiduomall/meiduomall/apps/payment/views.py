@@ -4,7 +4,7 @@ from django.conf import settings
 from django.http import HttpResponseForbidden, JsonResponse
 from django.shortcuts import render
 from django.views import View
-from meiduomall.utils.response_code import RETCODE
+from scripts import RETCODE
 from orders.models import OrderInfo
 from payment.models import Payment
 from users.utils import LoginRequiredJSONMixin

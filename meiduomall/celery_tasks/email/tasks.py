@@ -1,9 +1,10 @@
 import logging
 
+from django.conf import settings
 from django.core.mail import send_mail
 
 from celery_tasks.main import celery_app
-from meiduomall.settings import dev
+
 
 logger = logging.getLogger('django')
 
@@ -26,7 +27,7 @@ def send_verify_email(self, to_email, verify_url):
                    '<p><a href="%s">%s<a></p>' % (to_email, verify_url, verify_url)
     try:
         # 进行发送
-        send_mail(subject, "", dev.EMAIL_FROM, [to_email], html_message)
+        send_mail(subject, "", settings.EMAIL_FROM, [to_email], html_message)
 
     except Exception as e:
         logger.error(e)

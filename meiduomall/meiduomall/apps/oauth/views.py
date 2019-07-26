@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
 from django.conf import settings
-from meiduomall.utils.response_code import RETCODE
+from scripts import RETCODE
 from oauth.models import OAuthQQUser
 from oauth.utils import generate_access_token, check_access_token
 from users.models import User

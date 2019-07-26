@@ -6,8 +6,8 @@ from django.shortcuts import render
 from django.utils import timezone
 from django.views import View
 from goods.models import GoodsCategory, SKU, GoodsVisitCount
-from goods.utils import get_categories, get_breadcrumb, get_goods_and_spec
-from meiduomall.utils.response_code import RETCODE
+from goods.utils import get_categories, get_breadcrumb
+from scripts import RETCODE
 from goods.utils import get_goods_and_spec
 
 

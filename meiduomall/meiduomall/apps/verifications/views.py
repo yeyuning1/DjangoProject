@@ -4,8 +4,8 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django_redis import get_redis_connection
-from meiduomall.libs.captcha.captcha import captcha
-from meiduomall.utils.response_code import RETCODE
+from scripts import captcha
+from scripts import RETCODE
 from users.models import User
 from verifications import constants
 import logging
