@@ -1,6 +1,5 @@
 import json
 import re
-
 from django.core.cache import cache
 from django.http import JsonResponse, HttpResponseForbidden
 from django.shortcuts import render

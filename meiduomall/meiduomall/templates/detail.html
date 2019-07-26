@@ -30,38 +30,38 @@
                     <span>|</span>
                     <a href="cart.html">我的购物车</a>
                     <span>|</span>
-                    <a href="../static/user_center_order.html">我的订单</a>
+                    <a href="user_center_order.html">我的订单</a>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="search_bar clearfix">
-        <a href="index.html" class="logo fl"><img src="{{ static('images/logo.png') }}">
-            <div class="search_wrap fl">
-                <form method="get" action="/search/" class="search_con">
-                    <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
-                    <input type="submit" class="input_btn fr" name="" value="搜索">
-                </form>
-                <ul class="search_suggest fl">
-                    <li><a href="#">索尼微单</a></li>
-                    <li><a href="#">优惠15元</a></li>
-                    <li><a href="#">美妆个护</a></li>
-                    <li><a href="#">买2免1</a></li>
-                </ul>
-            </div>
+        <a href="index.html" class="logo fl"><img src="{{ static('images/logo.png') }}"></a>
+        <div class="search_wrap fl">
+            <form method="get" action="/search/" class="search_con">
+                <input type="text" class="input_text fl" name="q" placeholder="搜索商品">
+                <input type="submit" class="input_btn fr" name="" value="搜索">
+            </form>
+            <ul class="search_suggest fl">
+                <li><a href="#">索尼微单</a></li>
+                <li><a href="#">优惠15元</a></li>
+                <li><a href="#">美妆个护</a></li>
+                <li><a href="#">买2免1</a></li>
+            </ul>
+        </div>
 
-            <div @mouseenter="get_carts" class="guest_cart fr" v-cloak>
-                <a href="{{ url('carts:info') }}" class="cart_name fl">我的购物车</a>
-                <div class="goods_count fl" id="show_count">[[ cart_total_count ]]</div>
-                <ul class="cart_goods_show">
-                    <li v-for="sku in carts">
-                        <img :src="sku.default_image_url" alt="商品图片">
-                        <h4>[[ sku.name ]]</h4>
-                        <div>[[ sku.count ]]</div>
-                    </li>
-                </ul>
-            </div>
+        <div @mouseenter="get_carts" class="guest_cart fr" v-cloak>
+            <a href="{{ url('carts:info') }}" class="cart_name fl">我的购物车</a>
+            <div class="goods_count fl" id="show_count">[[ cart_total_count ]]</div>
+            <ul class="cart_goods_show">
+                <li v-for="sku in carts">
+                    <img :src="sku.default_image_url" alt="商品图片">
+                    <h4>[[ sku.name ]]</h4>
+                    <div>[[ sku.count ]]</div>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div class="navbar_con">
@@ -119,7 +119,7 @@
             <p>{{ sku.caption }}</p>
             <div class="price_bar">
                 <span class="show_pirce">¥<em>{{ sku.price }}</em></span>
-                <a href="javascript:;" class="goods_judge">18人评价</a>
+                <a href="javascript:;" class="goods_judge">[[ comments.length ]]人评价</a>
             </div>
             <div class="goods_num clearfix">
                 <div class="num_name fl">数 量：</div>
@@ -174,7 +174,9 @@
                 <li @click="on_tab_content('detail')" :class="tab_content.detail?'active':''">商品详情</li>
                 <li @click="on_tab_content('pack')" :class="tab_content.pack?'active':''">规格与包装</li>
                 <li @click="on_tab_content('service')" :class="tab_content.service?'active':''">售后服务</li>
-                <li @click="on_tab_content('comment')" :class="tab_content.comment?'active':''">商品评价(18)</li>
+                <li @click="on_tab_content('comment')" :class="tab_content.comment?'active':''">商品评价([[ comments.length
+                    ]])
+                </li>
             </ul>
             <div @click="on_tab_content('detail')" class="tab_content" :class="tab_content.detail?'current':''">
                 <dl>
@@ -187,6 +189,19 @@
                     <dt>规格与包装：</dt>
                     <dd>{{ goods.desc_pack|safe }}</dd>
                 </dl>
+            </div>
+            <div @click="on_tab_content('comment')" class="tab_content" :class="tab_content.comment?'current':''">
+                <ul class="judge_list_con">
+                    <li class="judge_list fl" v-for="comment in comments">
+                        <div class="user_info fl">
+                            <b>[[comment.username]]</b>
+                        </div>
+                        <div class="judge_info fl">
+                            <div :class="comment.score_class"></div>
+                            <div class="judge_detail">[[comment.comment]]</div>
+                        </div>
+                    </li>
+                </ul>
             </div>
             <div @click="on_tab_content('comment')" class="tab_content" :class="tab_content.comment?'current':''">
                 <ul class="judge_list_con">
