@@ -1,6 +1,6 @@
 #!C:\Users\yeyun\Envs\django1.11\Scripts\python
 import os
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "meiduo_mall.settings.dev")
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'meiduomall.settings.dev')
 import django
 django.setup()
 from django.conf import settings
@@ -11,11 +11,11 @@ from goods.utils import get_categories
 
 def generate_static_sku_detail_html(sku_id):
     """
-    生成静态页面商品详情页
-    :param sku_id:
-    :return:
+    生成静态商品详情页面
+    :param sku_id: 商品sku id
     """
-    # 获取商品分类
+    # 2.获取商品分类
+    # 2.获取商品分类
     categories = get_categories()
 
     sku = SKU.objects.get(id=sku_id)
@@ -24,6 +24,7 @@ def generate_static_sku_detail_html(sku_id):
     # 面包屑导航信息中的频道
     goods = sku.goods
     goods.channel = goods.category1.goodschannel_set.all()[0]
+
     # 构建当前商品的规格键
     # sku_key = [规格1参数id， 规格2参数id， 规格3参数id, ...]
 
@@ -74,9 +75,9 @@ def generate_static_sku_detail_html(sku_id):
         spec.spec_options = spec_options
 
     data = {
-        'goods': goods,
-        'goods_specs': goods_specs,
-        'sku': sku
+        'goods':goods,
+        'goods_specs':goods_specs,
+        'sku':sku
     }
 
     # 3.拼接参数
