@@ -1,8 +1,5 @@
 import os
 
-from booktest.models import BookInfo
-from booktest.serializers import BookInfoSerializer
-
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "Book.settings")
 import django
 
@@ -32,7 +29,7 @@ class UserSerializer(serializers.Serializer):
 class BookInfoSerializer(serializers.Serializer):
     """图书数据序列化器"""
     id = serializers.IntegerField(label='ID', read_only=True)
-    btitle = serializers.CharField(label='名称', max_length=20, validators=[about_django])
+    btitle = serializers.CharField(label='名称', max_length=20)
     bpub_date = serializers.DateField(label='发布日期')
     bread = serializers.IntegerField(label='阅读量', required=False)
     bcomment = serializers.IntegerField(label='评论量', required=False)
@@ -45,6 +42,7 @@ class BookInfoSerializer(serializers.Serializer):
     #     return value
 
     def validate(self, attrs):
+        print(attrs)
         bread = attrs['bread']
         bcomment = attrs['bcomment']
         if bread < bcomment:
@@ -55,7 +53,7 @@ class BookInfoSerializer(serializers.Serializer):
 class HeroInfoSerializer(serializers.Serializer):
     """英雄数据序列化器"""
     GENDER_CHOICES = (
-        (0, 'male')
+        (0, 'male'),
         (1, 'female')
     )
     id = serializers.IntegerField(label='ID', read_only=True)
@@ -65,7 +63,7 @@ class HeroInfoSerializer(serializers.Serializer):
     # hbook = serializers.PrimaryKeyRelatedField(label='图书', read_only=True)
     # hbook = serializers.PrimaryKeyRelatedField(label='图书', queryset=BookInfo.objects.all())
     # hbook = serializers.StringRelatedField(label='图书')
-    hbook = BookInfoSerializer()
+    # hbook = BookInfoSerializer()
 
 
 if __name__ == '__main__':
@@ -74,6 +72,11 @@ if __name__ == '__main__':
     print(serializer.data)
     u1 = {'name': 'yhx'}
     serializer = UserSerializer(data=u1)
+    serializer.is_valid()
+    print(serializer.errors)
+    print(serializer.validated_data)
+    b1 = {'btitle': 'python', 'bpub_date': '1999-01-01', 'bread': 1, 'bcomment': 2}
+    serializer = BookInfoSerializer(data=b1)
     serializer.is_valid()
     print(serializer.errors)
     print(serializer.validated_data)
