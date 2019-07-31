@@ -15,3 +15,8 @@ class BookInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = BookInfo
         exclude = ('is_delete',)
+        extra_kwargs = {
+            'bread': {'min_value': 0, 'required': True},
+            'bcomment': {'min_value': 0, 'required': False},
+            'bpub_date': {'required': True}
+        }
