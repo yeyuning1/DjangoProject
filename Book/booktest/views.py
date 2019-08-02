@@ -45,4 +45,3 @@ class BookInfoViewSet(ModelViewSet):
     serializer_class = BookInfoSerializer
     queryset = BookInfo.objects.all()
     lookup_value_regex = '\d+'
-
