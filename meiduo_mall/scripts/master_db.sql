@@ -18,8 +18,8 @@
 --
 -- Current Database: `meiduo_sh28`
 --
-
-CREATE DATABASE /*!32312 IF NOT EXISTS*/ `meiduo_sh28` /*!40100 DEFAULT CHARACTER SET utf8 */;
+#
+# CREATE DATABASE /*!32312 IF NOT EXISTS*/ `meiduo_sh28` /*!40100 DEFAULT CHARACTER SET utf8 */;
 
 USE `meiduo_sh28`;
 
