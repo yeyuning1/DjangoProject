@@ -1,7 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser, Permission
-from meiduo_mall.utils.models import BaseModel
+
 from areas.models import Area
+from meiduo_mall.utils.models import BaseModel
 
 
 class User(AbstractUser):

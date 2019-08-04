@@ -19,15 +19,15 @@ from django.contrib import admin
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('users.urls')),
-    url('^', include('verifycations.urls')),
-    url('^', include('contents.urls')),
-    url('^', include('oauth.urls')),
-    url('^', include('areas.urls')),
-    url('^', include('goods.urls')),
+    url(r'^', include('verifycations.urls')),
+    url(r'^', include('contents.urls')),
+    url(r'^', include('oauth.urls')),
+    url(r'^', include('areas.urls')),
+    url(r'^', include('goods.urls')),
     # url(r'^search/', include('haystack.urls')),
-    url('^', include('carts.urls')),
-    url('^', include('orders.urls')),
-    url('^', include('payments.urls')),
+    url(r'^', include('carts.urls')),
+    url(r'^', include('orders.urls')),
+    url(r'^', include('payments.urls')),
     url(r'^meiduo_admin/', include('meiduo_admin.urls')),
 ]
 
