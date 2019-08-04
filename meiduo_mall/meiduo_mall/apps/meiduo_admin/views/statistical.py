@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from goods.models import GoodsVisitCount
-from serializers.statistical import GoodsVisitSerializer
+from meiduo_admin.serializers.statistical import GoodsVisitSerializer
 from users.models import User
 
 

@@ -331,6 +331,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    'DEFAULT_PAGINATION_CLASS': 'meiduo_admin.utils.pagination.StandardResultPagination',
 }
 # JWT扩展配置
 JWT_AUTH = {
