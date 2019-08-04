@@ -107,15 +107,15 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-        'HOST': '172.16.179.139',  # 数据库主机
+        'HOST': '127.0.0.1',  # 数据库主机
         'PORT': 3306,  # 数据库端口
-        'USER': 'root',  # 数据库用户名
-        'PASSWORD': 'mysql',  # 数据库用户密码
+        'USER': 'yeyuning',  # 数据库用户名
+        'PASSWORD': 'yeyuning',  # 数据库用户密码
         'NAME': 'meiduo_sh28'  # 数据库名字
     },
     # 'slave': {
     #     'ENGINE': 'django.db.backends.mysql',  # 数据库引擎
-    #     'HOST': '172.16.179.139',  # 数据库主机
+    #     'HOST': '127.0.0.1',  # 数据库主机
     #     'PORT': 8306,  # 数据库端口
     #     'USER': 'root',  # 数据库用户名
     #     'PASSWORD': 'mysql',  # 数据库用户密码
@@ -172,42 +172,42 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 CACHES = {
     "default": {  # 默认
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.16.179.139:6379/0",  # 可改：ip、port、db
+        "LOCATION": "redis://127.0.0.1:6379/0",  # 可改：ip、port、db
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "session": {  # session
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.16.179.139:6379/1",
+        "LOCATION": "redis://127.0.0.1:6379/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "image_code": {  # 图形验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.16.179.139:6379/2",
+        "LOCATION": "redis://127.0.0.1:6379/2",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "sms_code": {  # 图形验证码
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.16.179.139:6379/3",
+        "LOCATION": "redis://127.0.0.1:6379/3",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "history": {  # 浏览记录
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.16.179.139:6379/4",
+        "LOCATION": "redis://127.0.0.1:6379/4",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     },
     "cart": {  # 购物车
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://172.16.179.139:6379/5",
+        "LOCATION": "redis://127.0.0.1:6379/5",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
