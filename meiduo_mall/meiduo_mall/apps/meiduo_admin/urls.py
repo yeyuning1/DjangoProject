@@ -1,5 +1,7 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
+
+from meiduo_admin.views import skus
 from .views import channels
 from .views import statistical
 from .views import users
@@ -18,4 +20,7 @@ urlpatterns = [
 ]
 router = DefaultRouter()
 router.register('goods/channels', channels.ChannelViewSet, base_name='channels')
+urlpatterns += router.urls
+router = DefaultRouter()
+router.register(r'skus/images', skus.SKUImageViewSet, base_name='images')
 urlpatterns += router.urls
