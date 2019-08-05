@@ -101,7 +101,6 @@ class AdminAuthorizeView(CreateAPIView):
 class UserInfoView(ListCreateAPIView):
     permission_classes = [IsAdminUser]
     serializer_class = UserSerializer
-    queryset = User.objects.all()
 
     def get_queryset(self):
         """返回视图所使用的查询集"""

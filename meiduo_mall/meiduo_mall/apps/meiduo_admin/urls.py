@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^users/$', users.UserInfoView.as_view()),
     url(r'^goods/channel_types/$', channels.ChannelTypesView.as_view()),
     url(r'^goods/categories/$', channels.ChannelCategoriesView.as_view()),
+    url(r'^skus/simple/$', skus.SKUSimpleView.as_view()),
 ]
 router = DefaultRouter()
 router.register('goods/channels', channels.ChannelViewSet, base_name='channels')
