@@ -25,3 +25,6 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register(r'skus/images', skus.SKUImageViewSet, base_name='images')
 urlpatterns += router.urls
+router = DefaultRouter()
+router.register('skus', skus.SKUViewSet, base_name='skus')
+urlpatterns += router.urls
