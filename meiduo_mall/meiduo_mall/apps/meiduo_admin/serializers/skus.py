@@ -58,3 +58,5 @@ class SKUSerializer(serializers.ModelSerializer):
         model = SKU
         # 排除模型的字段
         exclude = ('create_time', 'update_time', 'default_image', 'spu', 'comments')
+
+
