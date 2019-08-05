@@ -13,6 +13,8 @@ urlpatterns = [
     url(r'^statistical/month_increment/$', statistical.UserMonthCountView.as_view()),
     url(r'^statistical/goods_day_views/$', statistical.GoodsDayView.as_view()),
     url(r'^users/$', users.UserInfoView.as_view()),
+    url(r'^goods/channel_types/$', channels.ChannelTypesView.as_view()),
+    url(r'^goods/categories/$', channels.ChannelCategoriesView.as_view()),
 ]
 router = DefaultRouter()
 router.register('goods/channels', channels.ChannelViewSet, base_name='channels')
