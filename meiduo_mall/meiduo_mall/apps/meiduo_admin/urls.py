@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from rest_framework.routers import DefaultRouter
 
-from meiduo_admin.views import skus, spus
+from meiduo_admin.views import skus, spus, orders
 from .views import channels
 from .views import statistical
 from .views import users
@@ -30,3 +30,9 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('skus', skus.SKUViewSet, base_name='skus')
 urlpatterns += router.urls
+# 订单管理
+router = DefaultRouter()
+router.register('orders', orders.OrdersViewSet, base_name='orders')
+urlpatterns += router.urls
+for i in urlpatterns:
+    print(i)

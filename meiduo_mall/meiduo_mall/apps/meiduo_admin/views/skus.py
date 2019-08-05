@@ -28,7 +28,7 @@ class SKUViewSet(ModelViewSet):
     lookup_value_regex = '\d+'
 
     def get_queryset(self):
-        keyword = self.request.query_params['keyword']
+        keyword = self.request.query_params.get('keyword')
         if keyword:
             skus = SKU.objects.filter(Q(name__contains=keyword) |
                                       Q(caption__contains=keyword))

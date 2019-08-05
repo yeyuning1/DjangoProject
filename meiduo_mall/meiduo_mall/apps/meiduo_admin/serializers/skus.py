@@ -121,3 +121,18 @@ class SKUSerializer(serializers.ModelSerializer):
                 )
 
         return sku
+
+    def update(self, instance, validated_data):
+        specs = validated_data.pop('specs')
+
+        with transaction.atomic():
+            sku = super().update(instance, validated_data)
+            instance.specs.all().delete()
+
+            for spec in specs:
+                SKUSpecification.objects.create(
+                    sku=instance,
+                    spec_id=spec.get('spec_id'),
+                    option_id=spec.get('option_id')
+                )
+        return sku
