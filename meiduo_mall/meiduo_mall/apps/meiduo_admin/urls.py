@@ -19,6 +19,7 @@ urlpatterns = [
     url(r'^goods/categories/$', channels.ChannelCategoriesView.as_view()),
     url(r'^skus/simple/$', skus.SKUSimpleView.as_view()),
     url(r'^goods/simple/$', spus.SPUSimpleView.as_view()),
+    url(r'^goods/(?P<pk>\d+)/specs/$', spus.SPUSpecView.as_view()),
 ]
 router = DefaultRouter()
 router.register('goods/channels', channels.ChannelViewSet, base_name='channels')
