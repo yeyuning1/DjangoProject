@@ -1,6 +1,7 @@
 from django.core.files.storage import Storage
 from django.conf import settings
 from fdfs_client.client import Fdfs_client
+from rest_framework.exceptions import APIException
 
 
 class FDFSStorage(Storage):
@@ -25,7 +26,7 @@ class FDFSStorage(Storage):
         client = Fdfs_client(self.client_conf)
         res = client.upload_by_buffer(content.read())
         if res.get('Status') != 'Upload successed.':
-            raise Exception('上传文件到FDFS系统失败')
+            raise APIException('上传文件到FDFS系统失败')
 
         file_id = res.get('Remote file_id')
         return file_id
