@@ -55,6 +55,7 @@ class AdminSerializer(serializers.ModelSerializer):
            }
         }
 
+
     def create(self, validated_data):
         """创建管理员用户"""
         # 设置管理员标记is_staff为True
