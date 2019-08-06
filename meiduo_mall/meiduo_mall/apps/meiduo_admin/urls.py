@@ -1,7 +1,8 @@
 from django.conf.urls import url
+
 from rest_framework.routers import DefaultRouter
 
-from meiduo_admin.views import skus, spus, orders
+from meiduo_admin.views import skus, spus, orders, permissions
 from .views import channels
 from .views import statistical
 from .views import users
@@ -20,6 +21,15 @@ urlpatterns = [
     url(r'^skus/simple/$', skus.SKUSimpleView.as_view()),
     url(r'^goods/simple/$', spus.SPUSimpleView.as_view()),
     url(r'^goods/(?P<pk>\d+)/specs/$', spus.SPUSpecView.as_view()),
+    url(r'^permission/content_types/$', permissions.PermissionViewSet.as_view({
+        'get': 'content_types'
+    })),
+    url(r'^permission/simple/$', permissions.GroupViewSet.as_view({
+        'get': 'simple'
+    })),
+    url(r'^permission/groups/simple/$', permissions.AdminViewSet.as_view({
+        'get': 'simple'
+    })),
 ]
 router = DefaultRouter()
 router.register('goods/channels', channels.ChannelViewSet, base_name='channels')
@@ -33,6 +43,17 @@ urlpatterns += router.urls
 # 订单管理
 router = DefaultRouter()
 router.register('orders', orders.OrdersViewSet, base_name='orders')
+urlpatterns += router.urls
+# 权限管理
+router = DefaultRouter()
+router.register('permission/perms', permissions.PermissionViewSet, base_name='perms')
+urlpatterns += router.urls
+
+router = DefaultRouter()
+router.register('permission/groups', permissions.GroupViewSet, base_name='groups')
+urlpatterns += router.urls
+router = DefaultRouter()
+router.register('permission/admins', permissions.AdminViewSet, base_name='admins')
 urlpatterns += router.urls
 for i in urlpatterns:
     print(i)

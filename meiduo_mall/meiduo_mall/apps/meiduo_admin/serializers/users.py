@@ -1,7 +1,8 @@
 import re
 
 from django.utils import timezone
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.response import Response
 
 from users.models import User
 
@@ -102,3 +103,10 @@ class UserSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('手机号已注册')
 
         return value
+
+    def create(self, validated_data):
+        try:
+            instance = User.objects.create_user(**validated_data)
+        except Exception:
+            return Response(status=status.HTTP_507_INSUFFICIENT_STORAGE)
+        return instance
