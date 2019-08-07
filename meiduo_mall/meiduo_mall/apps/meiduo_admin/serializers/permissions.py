@@ -1,10 +1,10 @@
-import re
+
 
 from django.contrib.auth.models import Permission, Group
 from django.contrib.contenttypes.models import ContentType
-from rest_framework import serializers, status
+from rest_framework import serializers
 
-from rest_framework.response import Response
+
 
 from users.models import User
 
