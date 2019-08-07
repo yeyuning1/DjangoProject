@@ -10,7 +10,7 @@ class SPUSimpleSerializer(serializers.ModelSerializer):
 
 
 class SpecOptionSerializer(serializers.ModelSerializer):
-    """SPU规格序列化器类"""
+    """SPU规格选项序列化器类"""
 
     class Meta:
         model = SpecificationOption
@@ -18,10 +18,26 @@ class SpecOptionSerializer(serializers.ModelSerializer):
 
 
 class SPUSpecSerializer(serializers.ModelSerializer):
-    """SPU序列化器类"""
+    """SPU规格序列化器类"""
     # 关联对象的嵌套序列化
     options = SpecOptionSerializer(label='Opt选项', many=True)
 
     class Meta:
         model = SPUSpecification
         fields = ('id', 'name', 'options')
+
+
+class SPUSerializer(serializers.Serializer):
+    """SPU序列化器类"""
+
+    class Meta:
+        model = SPU
+        fields = (
+            'id', 'name', 'brand', 'brand_id',
+            'category1_id', 'category2_id', 'category3_id',
+            'sales', 'comments'
+        )
+        extra_kwargs = {
+
+        }
+# TODO:1
