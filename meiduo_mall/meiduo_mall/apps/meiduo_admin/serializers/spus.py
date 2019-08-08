@@ -79,3 +79,5 @@ class SPUSerializer(serializers.ModelSerializer):
         if category3_id not in [sub.id for sub in category2.subs]:
             raise serializers.ValidationError('三级分类有误')
         return attrs
+
+        # 评论图片存储功能

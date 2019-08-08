@@ -28,7 +28,7 @@ class OrdersViewSet(UpdateModelMixin, ReadOnlyModelViewSet):
             orders = OrderInfo.objects.all()
         else:
             orders = OrderInfo.objects.filter(Q(order_id=keyword) |
-                                              Q(skus__sku__name__contains=keyword))
+                                              Q(skus__sku__name__contains=keyword)).ditinct()
         return orders
 
     @action(methods=['put'], detail=True)

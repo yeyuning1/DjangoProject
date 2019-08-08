@@ -35,13 +35,6 @@ class SPUSpecView(ListAPIView):
         return SPUSpecification.objects.filter(spu_id=pk)
 
 
-class SPUViewSet(ModelViewSet):
-    """SPU管理视图集"""
-    permission_classes = [IsAdminUser]
-    serializer_class = SPUSerializer
-    queryset = SPU.objects.all()
-
-
 class BrandsSimpleView(ListAPIView):
     permission_classes = [IsAdminUser]
     queryset = Brand.objects.all()
@@ -61,3 +54,10 @@ class GoodsCategorySubsView(RetrieveAPIView):
     serializer_class = GoodsCategorySubsSerializer
     pagination_class = None
     queryset = GoodsCategory.objects.all()
+
+
+class SPUViewSet(ModelViewSet):
+    """SPU管理视图集"""
+    permission_classes = [IsAdminUser]
+    serializer_class = SPUSerializer
+    queryset = SPU.objects.all()

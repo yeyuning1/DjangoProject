@@ -6,7 +6,7 @@
           <el-form-item label="规格名称：" prop="name">
             <el-input type="text" v-model="specsForm.name" autocomplete="off" size="small"></el-input>
           </el-form-item>
-          <el-form-item label="规格：" prop="spu_id">
+          <el-form-item label="SPU：" prop="spu_id">
             <el-select v-model="specsForm.goods_id" size="small">
               <el-option
                 v-for="item in goods_list"
