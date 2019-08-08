@@ -1,3 +1,5 @@
+from abc import ABC
+
 from rest_framework import serializers
 
 from goods.models import SPU, SPUSpecification, SpecificationOption
@@ -27,17 +29,14 @@ class SPUSpecSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'options')
 
 
-class SPUSerializer(serializers.Serializer):
+class SPUSerializer(serializers.ModelSerializer):
     """SPU序列化器类"""
+    brand_id = serializers.IntegerField(label='品牌ID')
+    brand = serializers.StringRelatedField(label='品牌名称')
+    category1_id = serializers.IntegerField(label='一级分类ID')
+    category2_id = serializers.IntegerField(label='二级分类ID')
+    category3_id = serializers.IntegerField(label='三级分类ID')
 
     class Meta:
         model = SPU
-        fields = (
-            'id', 'name', 'brand', 'brand_id',
-            'category1_id', 'category2_id', 'category3_id',
-            'sales', 'comments'
-        )
-        extra_kwargs = {
-
-        }
-# TODO:1
+        exclude = ('create_time', 'update_time')

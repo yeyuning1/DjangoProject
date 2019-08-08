@@ -40,6 +40,10 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('skus', skus.SKUViewSet, base_name='skus')
 urlpatterns += router.urls
+# SPU管理
+router = DefaultRouter()
+router.register('goods', spus.SPUViewSet, base_name='goods')
+urlpatterns += router.urls
 # 订单管理
 router = DefaultRouter()
 router.register('orders', orders.OrdersViewSet, base_name='orders')
@@ -55,5 +59,3 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('permission/admins', permissions.AdminViewSet, base_name='admins')
 urlpatterns += router.urls
-for i in urlpatterns:
-    print(i)

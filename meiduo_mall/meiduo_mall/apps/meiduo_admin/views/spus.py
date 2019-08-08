@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from goods.models import SPU, SPUSpecification
-from meiduo_admin.serializers.spus import SPUSimpleSerializer, SPUSpecSerializer
+from meiduo_admin.serializers.spus import SPUSimpleSerializer, SPUSpecSerializer, SPUSerializer
 
 
 class SPUSimpleView(ListAPIView):
@@ -38,5 +38,4 @@ class SPUViewSet(ModelViewSet):
     """SPU管理视图集"""
     permission_classes = [IsAdminUser]
     serializer_class = SPUSerializer
-    queryset = SPU
-    # TODO:2
+    queryset = SPU.objects.all()
