@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from rest_framework.routers import DefaultRouter
 
-from meiduo_admin.views import skus, spus, orders, permissions, specs
+from meiduo_admin.views import skus, spus, orders, permissions, specs, options
 from .views import channels
 from .views import statistical
 from .views import users
@@ -21,6 +21,7 @@ urlpatterns = [
     url(r'^goods/channel/categories/$', spus.GoodsCategoriesView.as_view()),
     url(r'^goods/channel/categories/(?P<pk>\d+)/$', spus.GoodsCategorySubsView.as_view()),
     url(r'^goods/brands/simple/$', spus.BrandsSimpleView.as_view()),
+    url(r'^goods/specs/simple/$', specs.SpecsSimpleView.as_view()),
     url(r'^skus/simple/$', skus.SKUSimpleView.as_view()),
     url(r'^goods/simple/$', spus.SPUSimpleView.as_view()),
     url(r'^goods/(?P<pk>\d+)/specs/$', spus.SPUSpecView.as_view()),
@@ -45,7 +46,7 @@ router.register('skus', skus.SKUViewSet, base_name='skus')
 urlpatterns += router.urls
 # 规格管理视图
 router = DefaultRouter()
-router.register('goods/specs', specs.SpecsViewSet, base_name='admins')
+router.register('goods/specs', specs.SpecsViewSet, base_name='specs')
 urlpatterns += router.urls
 # SPU管理
 router = DefaultRouter()
@@ -65,4 +66,12 @@ router.register('permission/groups', permissions.GroupViewSet, base_name='groups
 urlpatterns += router.urls
 router = DefaultRouter()
 router.register('permission/admins', permissions.AdminViewSet, base_name='admins')
+urlpatterns += router.urls
+
+router = DefaultRouter()
+router.register('specs/options', options.OptionsViewSet, base_name='options')
+urlpatterns += router.urls
+
+router = DefaultRouter()
+router.register('goods/brands', options.OptionsViewSet, base_name='options')
 urlpatterns += router.urls

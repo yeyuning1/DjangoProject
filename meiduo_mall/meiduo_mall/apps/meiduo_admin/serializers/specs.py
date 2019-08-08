@@ -3,6 +3,14 @@ from rest_framework import serializers
 from goods.models import SPUSpecification, SPU
 
 
+class SpecsSimpleSerializer(serializers.ModelSerializer):
+    # spec = serializers.StringRelatedField(label='规格名称')
+
+    class Meta:
+        model = SPUSpecification
+        fields = ('id', 'name')
+
+
 class SpecsSerializer(serializers.ModelSerializer):
     spu = serializers.StringRelatedField(label='SPU名称')
     spu_id = serializers.IntegerField(label='SPU ID')
