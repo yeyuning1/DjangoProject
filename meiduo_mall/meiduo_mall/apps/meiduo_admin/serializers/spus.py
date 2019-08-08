@@ -2,7 +2,7 @@ from abc import ABC
 
 from rest_framework import serializers
 
-from goods.models import SPU, SPUSpecification, SpecificationOption
+from goods.models import SPU, SPUSpecification, SpecificationOption, GoodsCategory, Brand
 
 
 class SPUSimpleSerializer(serializers.ModelSerializer):
@@ -17,6 +17,26 @@ class SpecOptionSerializer(serializers.ModelSerializer):
     class Meta:
         model = SpecificationOption
         fields = ('id', 'value')
+
+
+class BrandsSimpleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Brand
+        fields = ('id', 'name')
+
+
+class GoodsCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = GoodsCategory
+        fields = ('id', 'name')
+
+
+class GoodsCategorySubsSerializer(serializers.ModelSerializer):
+    subs = GoodsCategorySerializer(label='子分类', many=True)
+
+    class Meta:
+        model = GoodsCategory
+        fields = ('id', 'name', 'subs')
 
 
 class SPUSpecSerializer(serializers.ModelSerializer):
@@ -40,3 +60,22 @@ class SPUSerializer(serializers.ModelSerializer):
     class Meta:
         model = SPU
         exclude = ('create_time', 'update_time')
+
+    def validate(self, attrs):
+        brand_id = attrs.get('brand_id')
+        category1_id = attrs.get('category1_id')
+        category2_id = attrs.get('category2_id')
+        category3_id = attrs.get('category3_id')
+        brands = Brand.objects.all()
+        if brand_id not in [brand.id for brand in brands]:
+            raise serializers.ValidationError('品牌有误')
+        try:
+            category1 = GoodsCategory.objects.get(id=category1_id)
+            category2 = GoodsCategory.objects.get(id=category2_id)
+        except GoodsCategory.DoesNotExist:
+            raise serializers.ValidationError('一级分类有误')
+        if category2_id not in [sub.id for sub in category1.subs]:
+            raise serializers.ValidationError('二级分类有误')
+        if category3_id not in [sub.id for sub in category2.subs]:
+            raise serializers.ValidationError('三级分类有误')
+        return attrs

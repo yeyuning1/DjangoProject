@@ -1,10 +1,11 @@
-from rest_framework.generics import ListAPIView, GenericAPIView
+from rest_framework.generics import ListAPIView, GenericAPIView, RetrieveAPIView
 from rest_framework.permissions import IsAdminUser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from goods.models import SPU, SPUSpecification
-from meiduo_admin.serializers.spus import SPUSimpleSerializer, SPUSpecSerializer, SPUSerializer
+from goods.models import SPU, SPUSpecification, GoodsCategory, Brand
+from meiduo_admin.serializers.spus import SPUSimpleSerializer, SPUSpecSerializer, SPUSerializer, \
+    GoodsCategorySerializer, BrandsSimpleSerializer, GoodsCategorySubsSerializer
 
 
 class SPUSimpleView(ListAPIView):
@@ -39,3 +40,24 @@ class SPUViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
     serializer_class = SPUSerializer
     queryset = SPU.objects.all()
+
+
+class BrandsSimpleView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = Brand.objects.all()
+    pagination_class = None
+    serializer_class = BrandsSimpleSerializer
+
+
+class GoodsCategoriesView(ListAPIView):
+    permission_classes = [IsAdminUser]
+    queryset = GoodsCategory.objects.filter(parent=None)
+    serializer_class = GoodsCategorySerializer
+    pagination_class = None
+
+
+class GoodsCategorySubsView(RetrieveAPIView):
+    permission_classes = [IsAdminUser]
+    serializer_class = GoodsCategorySubsSerializer
+    pagination_class = None
+    queryset = GoodsCategory.objects.all()
