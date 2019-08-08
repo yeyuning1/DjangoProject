@@ -6,6 +6,7 @@ from meiduo_admin.serializers.brands import BrandSerializer
 
 
 class BrandsViewSet(ModelViewSet):
+    lookup_value_regex = '\d+'
     permission_classes = [IsAdminUser]
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer

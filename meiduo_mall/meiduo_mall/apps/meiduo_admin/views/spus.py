@@ -43,6 +43,7 @@ class BrandsSimpleView(ListAPIView):
 
 
 class GoodsCategoriesView(ListAPIView):
+    lookup_value_regex = '\d+'
     permission_classes = [IsAdminUser]
     queryset = GoodsCategory.objects.filter(parent=None)
     serializer_class = GoodsCategorySerializer
@@ -50,6 +51,7 @@ class GoodsCategoriesView(ListAPIView):
 
 
 class GoodsCategorySubsView(RetrieveAPIView):
+    lookup_value_regex = '\d+'
     permission_classes = [IsAdminUser]
     serializer_class = GoodsCategorySubsSerializer
     pagination_class = None
@@ -58,6 +60,7 @@ class GoodsCategorySubsView(RetrieveAPIView):
 
 class SPUViewSet(ModelViewSet):
     """SPU管理视图集"""
+    lookup_value_regex = '\d+'
     permission_classes = [IsAdminUser]
     serializer_class = SPUSerializer
     queryset = SPU.objects.all()

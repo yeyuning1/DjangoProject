@@ -7,6 +7,7 @@ from meiduo_admin.serializers.specs import SpecsSerializer, SpecsSimpleSerialize
 
 
 class SpecsViewSet(ModelViewSet):
+    lookup_value_regex = '\d+'
     permission_classes = [IsAdminUser]
     queryset = SPUSpecification.objects.all()
     serializer_class = SpecsSerializer

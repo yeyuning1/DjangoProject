@@ -9,6 +9,7 @@ from meiduo_admin.serializers.channels import ChannelSerializer, ChannelGroupSer
 
 class ChannelViewSet(ModelViewSet):
     """频道管理视图集"""
+    lookup_value_regex = '\d+'
     permission_classes = [IsAdminUser]
     # 指定视图所使用的查询集
     queryset = GoodsChannel.objects.all()
@@ -33,5 +34,3 @@ class ChannelCategoriesView(ListAPIView):
     serializer_class = ChannelCategorySerializer
 
     pagination_class = None
-
-

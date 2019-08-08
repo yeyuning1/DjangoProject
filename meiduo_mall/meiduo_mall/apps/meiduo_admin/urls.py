@@ -2,7 +2,7 @@ from django.conf.urls import url
 
 from rest_framework.routers import DefaultRouter
 
-from meiduo_admin.views import skus, spus, orders, permissions, specs, options
+from meiduo_admin.views import skus, spus, orders, permissions, specs, options, brands
 from .views import channels
 from .views import statistical
 from .views import users
@@ -48,6 +48,8 @@ urlpatterns += router.urls
 router = DefaultRouter()
 router.register('goods/specs', specs.SpecsViewSet, base_name='specs')
 urlpatterns += router.urls
+
+
 # SPU管理
 router = DefaultRouter()
 router.register('goods', spus.SPUViewSet, base_name='goods')
@@ -72,6 +74,9 @@ router = DefaultRouter()
 router.register('specs/options', options.OptionsViewSet, base_name='options')
 urlpatterns += router.urls
 
+
 router = DefaultRouter()
-router.register('goods/brands', options.OptionsViewSet, base_name='options')
+router.register('goods/brands', brands.BrandsViewSet, base_name='brands')
 urlpatterns += router.urls
+for i in urlpatterns:
+    print(i)
