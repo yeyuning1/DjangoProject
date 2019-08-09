@@ -8,7 +8,7 @@ class SpecsSimpleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SPUSpecification
-        fields = ('id', 'name')
+        fields = ('id', 'spec_name')
 
 
 class SpecsSerializer(serializers.ModelSerializer):

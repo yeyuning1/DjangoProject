@@ -137,6 +137,10 @@ class SPUSpecification(BaseModel):
         verbose_name = '商品SPU规格'
         verbose_name_plural = verbose_name
 
+    @property
+    def spec_name(self):
+        return '%s: %s' % (self.spu.name, self.name)
+
     def __str__(self):
         return '%s: %s' % (self.spu.name, self.name)
 
