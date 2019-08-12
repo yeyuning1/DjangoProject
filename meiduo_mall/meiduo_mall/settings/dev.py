@@ -218,7 +218,6 @@ CACHES = {
 # 指定session的保存方案
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 SESSION_CACHE_ALIAS = "session"
-
 # 日志：当运行出错时，记录在日志中，方便后续修改
 LOGGING = {
     'version': 1,

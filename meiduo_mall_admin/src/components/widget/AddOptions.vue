@@ -11,7 +11,7 @@
               <el-option
                 v-for="item in specs_list"
                 :key="item.id"
-                :label="item.name"
+                :label="item.spec_name"
                 :value="item.id">
               </el-option>
             </el-select>
