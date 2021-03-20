@@ -11,7 +11,7 @@ django-redis==4.10.0
 elasticsearch==2.4.1
 idna==2.8
 itsdangerous==1.1.0
-Jinja2==2.10.1
+Jinja2==2.11.3
 kombu==4.6.3
 MarkupSafe==1.1.1
 mutagen==1.42.0
